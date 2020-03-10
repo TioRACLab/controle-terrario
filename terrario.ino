@@ -3,7 +3,6 @@ Controle de irrigação!
 https://github.com/TioRACLab/controle-terrario
 */
 
-#include <config.h>
 #include <Wire.h>
 #include <ds3231.h>
 
@@ -35,6 +34,8 @@ void setup() {
 void loop() {
 
     delay(5000);
+    mudarIrrigacao();
+    delay(10000);
     mudarIrrigacao();
 
     /*DS3231_get(&t);

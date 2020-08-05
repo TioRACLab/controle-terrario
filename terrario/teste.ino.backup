@@ -1,20 +1,28 @@
+#include <ds3231.h>
+
 /*
 Controle de irrigação!
 https://github.com/TioRACLab/controle-terrario
 */
 
-#include <Wire.h>
+//#include <Wire.h>
+//#include <LiquidCrystal_I2C.h>
+
+/*#include <Wire.h>
 #include <ds3231.h>
 
 const int pinoCascata = 8; 
 const int pinoIrrigacao = 9; 
 const int pinoLamapada = 10;
 
-bool ativarIrrigacao = true;
+
+bool ativarIrrigacao = true;*/
 struct ts t;
 
+LiquidCrystal_I2C lcd(0x27,20,4); 
+
 void setup() {
-  pinMode(pinoCascata, OUTPUT);
+  /*pinMode(pinoCascata, OUTPUT);
   pinMode(pinoIrrigacao, OUTPUT);
 
   Serial.begin(9600);
@@ -28,15 +36,26 @@ void setup() {
   t.mon=03;
   t.year=2020;
  
-  DS3231_set(t); 
+  DS3231_set(t);*/
+
+   lcd.init();                      // initialize the lcd 
+
+  // Print a message to the LCD.
+
+  lcd.backlight();
+  lcd.setCursor(0,0);
+  lcd.print("Ricardinho diz:)");
+  lcd.setCursor(0,1);
+  lcd.print("Oiiii Gatinha!!!");
 }
 
 void loop() {
 
-    delay(5000);
+    
+    /*delay(5000);
     mudarIrrigacao();
     delay(10000);
-    mudarIrrigacao();
+    mudarIrrigacao();*/
 
     /*DS3231_get(&t);
 
@@ -77,7 +96,7 @@ void loop() {
     delay(1000);
 }
 
-void mudarIrrigacao() {
+/*void mudarIrrigacao() {
     ativarIrrigacao = !ativarIrrigacao;
 
     if (ativarIrrigacao) {
@@ -97,4 +116,4 @@ void mudarLampada(bool ativar) {
     else {
       digitalWrite(pinoLamapada, LOW);
     }
-}
+}*/

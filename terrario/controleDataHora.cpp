@@ -57,7 +57,7 @@ void initDataHora(){
     DS3231_init(DS3231_INTCN);
 
     //TODO: Não setar a data e hota no INIT.
-    setarDataHora(2020, 8, 5, 11, 25, 00);
+    //setarDataHora(2020, 8, 5, 11, 25, 00);
 }
 
 /**

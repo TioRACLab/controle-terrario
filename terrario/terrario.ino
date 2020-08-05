@@ -1,5 +1,6 @@
 
 
+
 /*
 Sistema de controle do terrário!
 https://github.com/TioRACLab/controle-terrario
@@ -8,12 +9,13 @@ https://github.com/TioRACLab/controle-terrario
 
 #include <Wire.h>
 
-#include "terrario.h"
+#include "pinagem.h"
 #include "controleDataHora.h"
-//#include "moduloLuz.h"
-#include "programacao.h"
+#include "moduloLuz.h"
+#include "agenda.h"
+#include "painel.h"
 
-struct Programacao prog;
+struct agenda prog;
 
 void setup() {
     Serial.begin(9600);
@@ -22,28 +24,29 @@ void setup() {
     Wire.begin();
 
     initDataHora();
-    //initLuz();
+    setarDataHora(2020, 8, 5, 18, 32, 00);
+
+    initLuz();
+    initPainel();
 
     Serial.println("Terrario configurado");
-
-    prog.tipo = 2;
-    prog.valor1 = 3;
-    prog.valor2 = 10;
-    prog.valor3 = 25;
-    prog.valor4 = 10;
 }
 
 void loop() {
-    Serial.println("Loop");
+    //Serial.println("Loop");
 
     struct ts dataHora;
+    struct agenda prog;
+
+    prog.tipo = 1;
+    prog.valor1 = 12;
+    prog.valor2 = 0;
+    prog.valor3 = 18;
+    prog.valor4 = 0;
+
     obterDataHora(&dataHora);
-
-    bool valor = prog.validar(&dataHora, false);
-    Serial.println(valor);
-
-
-    //validarLuz(&dataHora);
+    validarLuz(&dataHora, &prog);
+    mostrarPainel(&dataHora, "Estamos evoluindo!!!");
     
     
     //Serial.println(validarLuz());

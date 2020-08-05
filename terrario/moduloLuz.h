@@ -9,4 +9,4 @@
 
 void initLuz();
 
-void validarLuz(struct ts *dataHora);
+void validarLuz(struct ts *dataHora, struct agenda *progLuz);

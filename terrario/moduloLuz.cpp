@@ -1,14 +1,14 @@
 #include <Arduino.h>
 #include <ds3231.h>
-#include "terrario.h"
+#include "pinagem.h"
+#include "agenda.h"
 #include "moduloLuz.h"
 
 void initLuz() {
-    Serial.println("Iniciando lampadas...");
     pinMode(pinoLampada, OUTPUT);
 }
 
-void validarLuz(struct ts *dataHora, struct Programacao *progLuz) {
-    
-    digitalWrite(pinoLamapada, (dataHora->sec < 30));
+void validarLuz(struct ts *dataHora, struct agenda *progLuz) {
+    bool valido = progLuz->validar(dataHora, true);
+    digitalWrite(pinoLamapada, valido);
 }

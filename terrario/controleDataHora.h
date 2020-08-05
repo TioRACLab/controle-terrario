@@ -16,3 +16,5 @@ void setarData(int16_t ano, int8_t mes, int8_t dia);
 void setarHora(int8_t hora, int8_t minuto, int8_t segundo);
 
 void obterDataHora(struct ts *dataHora);
+
+int obterDiaSemana(int year, int month, int day);

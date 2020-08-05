@@ -1,15 +1,15 @@
 #include "programacao.h"
 #include <ds3231.h>
 
-uint32_t get_unixtime(struct ts t)
+uint32_t Programacao::get_unixtime(struct ts *t)
 {
     uint16_t y;
-    y = t.year - 1600; // cause this is the first year < at 1970 where year % 400 = 0
-    return (t.year - 1970) * 31536000 + (t.yday - 1 + (y / 4) - (y / 100) + (y / 400) - 89) * 86400 + t.hour * 3600 + t.min * 60 + t.sec;
+    y = t->year - 1600; // cause this is the first year < at 1970 where year % 400 = 0
+    return (t->year - 1970) * 31536000 + (t->yday - 1 + (y / 4) - (y / 100) + (y / 400) - 89) * 86400 + t->hour * 3600 + t->min * 60 + t->sec;
 }
 
 bool Programacao::validar(struct ts *dataHora, bool tempoMinutos) {
-
+    Serial.println("Validar");
     struct ts dataInicio;
 
     dataInicio.year = dataHora->year;
@@ -20,6 +20,7 @@ bool Programacao::validar(struct ts *dataHora, bool tempoMinutos) {
     //Tipo diario
     if (this->tipo == 1) {
         //TODO: Tratar viradas de dia???
+        Serial.println("Tipo dia");
 
         if (dataHora->hour < this->valor1 || dataHora->hour > this->valor3)
             return false;
@@ -35,14 +36,17 @@ bool Programacao::validar(struct ts *dataHora, bool tempoMinutos) {
 
     //Tipo Semanal
     if (this->tipo ==2) {
+
+        Serial.println("Tipo semana");
         //TODO: Tratar viradas de dia???
         if (dataHora->wday == this->valor1) {
+            Serial.println("ratar hj");
             dataInicio.hour = this->valor2;
             dataInicio.min = this->valor3;
 
-            uint32_t stampInicio = get_unixtime(dataInicio);
-            uint32_t stampFim = get_unixtime(dataInicio);
-            uint32_t stampAtual = get_unixtime(*dataHora);
+            uint32_t stampInicio = this->get_unixtime(&dataInicio);
+            uint32_t stampFim = this->get_unixtime(&dataInicio);
+            uint32_t stampAtual = this->get_unixtime(dataHora);
 
             int16_t segundos = this->valor4;
 
@@ -51,8 +55,20 @@ bool Programacao::validar(struct ts *dataHora, bool tempoMinutos) {
 
             stampFim += segundos;
 
+            Serial.print("stampInicio: ");
+            Serial.println(stampInicio);
+
+            Serial.print("stampFim: ");
+            Serial.println(stampFim);
+
+            Serial.print("stampAtual: ");
+            Serial.println(stampAtual);
+
             return (stampInicio <= stampAtual && stampAtual <= stampFim);
         }
+
+        Serial.print("Nao ativo - ");
+        Serial.println(dataHora->wday);
 
         return false;
     }

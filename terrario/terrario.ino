@@ -26,11 +26,11 @@ void setup() {
 
     Serial.println("Terrario configurado");
 
-    prog.tipo = 1;
-    prog.valor1 = 1;
-    prog.valor2 = 0;
-    prog.valor3 = 3;
-    prog.valor4 = 4;
+    prog.tipo = 2;
+    prog.valor1 = 3;
+    prog.valor2 = 10;
+    prog.valor3 = 25;
+    prog.valor4 = 10;
 }
 
 void loop() {

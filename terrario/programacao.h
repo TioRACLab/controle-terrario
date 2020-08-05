@@ -10,4 +10,7 @@ struct Programacao {
     uint8_t valor3;     //Diario = Hora Fim, Semanal = Minuto Inicio
     uint8_t valor4;     //Diario = Minuto Fim, Semanal = Tempo (Depende do dispositivo)
     bool validar(struct ts *dataHora, bool tempoMinutos);
+
+    private:
+        uint32_t get_unixtime(struct ts *t);
 };

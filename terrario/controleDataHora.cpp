@@ -1,6 +1,8 @@
 /**
 * Módulo de controle de Data Hora para tratamento no terrário
 * Esse módulo é responsável em setar e obter valores de data e hora atual.
+* Autor: Ricardo Augusto Coelho
+* TioRACLAb
 */
 
 #include <ds3231.h>
@@ -24,10 +26,8 @@ void setarDataHora(int16_t ano, int8_t mes, int8_t dia, int8_t hora, int8_t minu
 /**
  * Obtem a data e hora atual 
  */
-struct ts obterDataHora() {
-    struct ts dataHora;
-    DS3231_get(&dataHora);
-    return dataHora;
+void obterDataHora(struct ts *dataHora) {
+    DS3231_get(dataHora);
 }
 
 /**
@@ -38,6 +38,7 @@ struct ts obterDataHora() {
 void initDataHora(){
     DS3231_init(DS3231_INTCN);
 
+    //TODO: Não setar a data e hota no INIT.
     setarDataHora(2020, 8, 4, 20, 34, 12);
 }
 
@@ -45,7 +46,8 @@ void initDataHora(){
  * Obtem a hora atual e seta uma nova data
  */
 void setarData(int16_t ano, int8_t mes, int8_t dia) {
-    struct ts dataHora = obterDataHora();
+    struct ts dataHora;
+    obterDataHora(&dataHora);
 
     dataHora.year = ano;
     dataHora.mon = mes;
@@ -58,7 +60,8 @@ void setarData(int16_t ano, int8_t mes, int8_t dia) {
  * Obtem a Data atual e seta uma nova hora.
  */
 void setarHora(int8_t hora, int8_t minuto, int8_t segundo) {
-    struct ts dataHora = obterDataHora();
+    struct ts dataHora;
+    obterDataHora(&dataHora);
 
     dataHora.hour = hora;
     dataHora.min = minuto;

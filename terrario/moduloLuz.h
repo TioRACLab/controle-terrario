@@ -1,8 +1,12 @@
+/**
+* 
+* 
+* Autor: Ricardo Augusto Coelho
+* TioRACLAb
+*/
+
 #define pinoLamapada 6
 
-//Inicializa o pocesso de luz
 void initLuz();
 
-//Processa o estado da luz
-//void validarLuz(struct ts *timestamp);
-String validarLuz();
+void validarLuz(struct ts *dataHora);

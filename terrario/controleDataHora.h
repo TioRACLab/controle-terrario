@@ -1,9 +1,10 @@
-/*
-*
-*
+/**
+* Módulo de controle de Data Hora para tratamento no terrário
+* Esse módulo é responsável em setar e obter valores de data e hora atual.
+* Autor: Ricardo Augusto Coelho
+* TioRACLAb
 */
 
-#include <Wire.h>
 #include <ds3231.h>
 
 void initDataHora();
@@ -14,4 +15,4 @@ void setarData(int16_t ano, int8_t mes, int8_t dia);
 
 void setarHora(int8_t hora, int8_t minuto, int8_t segundo);
 
-struct ts obterDataHora();
+void obterDataHora(struct ts *dataHora);

@@ -5,49 +5,48 @@ Sistema de controle do terrário!
 https://github.com/TioRACLab/controle-terrario
 */
 
-//#include "pinagem.h"
 
 #include <Wire.h>
-//#include "moduloLuz.h"
-#include "controleDataHora.h"
 
-struct ts t;
+#include "terrario.h"
+#include "controleDataHora.h"
+//#include "moduloLuz.h"
+#include "programacao.h"
+
+struct Programacao prog;
 
 void setup() {
     Serial.begin(9600);
+    Serial.println("Sistema do terrario está iniciando");
+
     Wire.begin();
 
-
-    Serial.println("Init1");
-    //initLuz();
     initDataHora();
+    //initLuz();
 
-    Serial.println("Oi Setup");
+    Serial.println("Terrario configurado");
 
+    prog.tipo = 1;
+    prog.valor1 = 1;
+    prog.valor2 = 0;
+    prog.valor3 = 3;
+    prog.valor4 = 4;
 }
 
 void loop() {
     Serial.println("Loop");
 
-    t = obterDataHora();
-    
-    Serial.print("Date : ");
-    Serial.print(t.mday);
-    Serial.print("/");
-    Serial.print(t.mon);
-    Serial.print("/");
-    Serial.print(t.year);
-    Serial.print("\t Hour : ");
-    Serial.print(t.hour);
-    Serial.print(":");
-    Serial.print(t.min);
-    Serial.print(".");
-    Serial.println(t.sec);
+    struct ts dataHora;
+    obterDataHora(&dataHora);
 
+    bool valor = prog.validar(&dataHora, false);
+    Serial.println(valor);
+
+
+    //validarLuz(&dataHora);
+    
+    
     //Serial.println(validarLuz());
     //DS3231_get(&t);
     //validarLuz(&t);
 }
-
-
-

@@ -6,9 +6,9 @@
 #define pinoIrrigacao 7
 #define pinoLampada 6
 #define pinoReservatorio 5
-#define pinoFogger 4
-#define pinoReleExtra1 1
-#define pinoReleExtra2 2
+#define pinoNeblina 4
+#define pinoArcoIris 3
+#define pinoReleExtra1 2
 
 //Pinos de controle do trenzinho.
 #define pinoTrem1 12

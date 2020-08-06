@@ -16,6 +16,7 @@ https://github.com/TioRACLab/controle-terrario
 #include "painel.h"
 #include "hidraulica.h"
 #include "controleTrem.h"
+#include "atmosfera.h"
 
 struct agenda prog;
 
@@ -32,6 +33,7 @@ void setup() {
     initPainel();
     initHidraulica();
     initTrem();
+    initAtmosfesra();
 
     Serial.println("Terrario configurado");
 }

@@ -55,19 +55,23 @@ void loop() {
     progC.tipo = 3;
 
     obterDataHora(&dataHora);
-    validarLuz(&dataHora, &prog);
-    processarHidraulica(&dataHora, &prog, &progC);
+    bool dia = validarLuz(&dataHora, &prog);
+    int statusHidraulica = processarHidraulica(&dataHora, &prog, &progC);
     processarTrem(&dataHora, &prog);
     //TODO: Atmosfera
 
-    
     int valor = analogRead(pinoSensorLago);
-    Serial.println(valor);
 
-    mostrarPainel(&dataHora, "Mensagem");
+    String mensagem;
     
-    
-    //Serial.println(validarLuz());
-    //DS3231_get(&t);
-    //validarLuz(&t);
+    mensagem = String(dia ? "Dia" : "Noite");
+
+    if (statusHidraulica == 1)
+        mensagem.concat(", Irrigando");
+    else if (statusHidraulica == 3)
+        mensagem.concat(", Repondo Agua");
+    else if (statusHidraulica == -2)
+        mensagem = String("**NIVEL BAIXO**");
+
+    mostrarPainel(&dataHora, mensagem.c_str());
 }

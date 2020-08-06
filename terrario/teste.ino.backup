@@ -100,20 +100,20 @@ void loop() {
     ativarIrrigacao = !ativarIrrigacao;
 
     if (ativarIrrigacao) {
-      digitalWrite(pinoCascata, HIGH);
-      digitalWrite(pinoIrrigacao, HIGH);
+      digitalWrite(pinoCascata, LOW);
+      digitalWrite(pinoIrrigacao, LOW);
     }
     else {
-      digitalWrite(pinoCascata, LOW);
-      digitalWrite(pinoIrrigacao, LOW); 
+      digitalWrite(pinoCascata, HIGH);
+      digitalWrite(pinoIrrigacao, HIGH); 
     }
 }
 
 void mudarLampada(bool ativar) {
     if (ativar) {
-      digitalWrite(pinoLamapada, HIGH);
+      digitalWrite(pinoLamapada, LOW);
     }
     else {
-      digitalWrite(pinoLamapada, LOW);
+      digitalWrite(pinoLamapada, HIGH);
     }
 }*/

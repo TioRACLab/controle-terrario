@@ -36,9 +36,9 @@ bool obterNivelReservatorio() {
  * Desativa a bomba principal e as válvulas
  */
 void desativarBombaPrincipal() {
-    digitalWrite(pinoBombaPrincipal, LOW);
-    digitalWrite(pinoCachoeira, LOW);
-    digitalWrite(pinoIrrigacao, LOW);
+    digitalWrite(pinoBombaPrincipal, HIGH);
+    digitalWrite(pinoCachoeira, HIGH);
+    digitalWrite(pinoIrrigacao, HIGH);
 }
 
 /**
@@ -46,9 +46,9 @@ void desativarBombaPrincipal() {
  */
 void ativarIrrigacao() {
     if (obterNivelAgua() >= 1) {
-        digitalWrite(pinoCachoeira, LOW);
-        digitalWrite(pinoIrrigacao, HIGH);
-        digitalWrite(pinoBombaPrincipal, HIGH);
+        digitalWrite(pinoCachoeira, HIGH);
+        digitalWrite(pinoIrrigacao, LOW);
+        digitalWrite(pinoBombaPrincipal, LOW);
     }
     else {
         desativarBombaPrincipal();
@@ -60,9 +60,9 @@ void ativarIrrigacao() {
  */
 void ativarCachoeira() {
     if (obterNivelAgua() >= 1) {
-        digitalWrite(pinoCachoeira, HIGH);
-        digitalWrite(pinoIrrigacao, LOW);
-        digitalWrite(pinoBombaPrincipal, HIGH);
+        digitalWrite(pinoCachoeira, LOW);
+        digitalWrite(pinoIrrigacao, HIGH);
+        digitalWrite(pinoBombaPrincipal, LOW);
     }
     else {
         desativarBombaPrincipal();
@@ -74,16 +74,17 @@ void ativarCachoeira() {
  */
 bool verificarReposicaoAgua() {
     if (obterNivelAgua() < 2) {
-        digitalWrite(pinoReservatorio, HIGH);
+        digitalWrite(pinoReservatorio, LOW);
         return true;
     }
     
-    digitalWrite(pinoReservatorio, LOW);
+    digitalWrite(pinoReservatorio, HIGH);
     return false;
 }
 
 /**
  * Verifica o agendamento da irrigação e da cachoeira.
+ * 0 = Tudo desativado, 1 = Irrigacao, 2 = Cachoeira, 3 = Repondo água, -1 = Lago em baixo nível, -2 = Reservatório baixo nível
  */
 int processarHidraulica(struct ts *dataHora, struct agenda *progIrrigacao, struct agenda *progCachoeira) {
     int estadoHidraulica = 0; // 0 = Tudo desativado, 1 = Irrigacao, 2 = Cachoeira, 3 = Repondo água, -1 = Lago em baixo nível, -2 = Reservatório baixo nível

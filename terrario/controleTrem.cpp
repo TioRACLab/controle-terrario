@@ -14,8 +14,8 @@ void initTrem() {
 }
 
 void movimentar(bool frente, int velocidade) {
-    digitalWrite(pinoTrem1, frente ? HIGH : LOW);
-    digitalWrite(pinoTrem2, frente ? LOW : HIGH);
+    digitalWrite(pinoTrem1, frente ? LOW : HIGH);
+    digitalWrite(pinoTrem2, frente ? HIGH : LOW);
     
     if (velocidade > 255)
         velocidade = 255;
@@ -24,8 +24,8 @@ void movimentar(bool frente, int velocidade) {
 }
 
 void parar() {
-    digitalWrite(pinoTrem1, LOW);
-    digitalWrite(pinoTrem2, LOW);
+    digitalWrite(pinoTrem1, HIGH);
+    digitalWrite(pinoTrem2, HIGH);
     analogWrite(pinoTremENA, 0);
 }
 

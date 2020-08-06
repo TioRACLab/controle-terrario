@@ -8,16 +8,16 @@ void initAtmosfesra() {
 }
 
 void habilitarNeblina() {
-    digitalWrite(pinoArcoIris, LOW);
-    digitalWrite(pinoNeblina, HIGH);
+    digitalWrite(pinoArcoIris, HIGH);
+    digitalWrite(pinoNeblina, LOW);
 }
 
 void habilitarArcoIris() {
-    digitalWrite(pinoNeblina, LOW);
-    digitalWrite(pinoArcoIris, HIGH);
+    digitalWrite(pinoNeblina, HIGH);
+    digitalWrite(pinoArcoIris, LOW);
 }
 
 void desabilitarAtmosfera() {
-    digitalWrite(pinoNeblina, LOW);
-    digitalWrite(pinoArcoIris, LOW);
+    digitalWrite(pinoNeblina, HIGH);
+    digitalWrite(pinoArcoIris, HIGH);
 }

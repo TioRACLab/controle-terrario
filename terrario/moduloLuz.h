@@ -5,8 +5,6 @@
 * TioRACLAb
 */
 
-#define pinoLamapada 6
-
 void initLuz();
 
-void validarLuz(struct ts *dataHora, struct agenda *progLuz);
+bool validarLuz(struct ts *dataHora, struct agenda *progLuz);

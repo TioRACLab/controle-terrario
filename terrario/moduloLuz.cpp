@@ -8,7 +8,8 @@ void initLuz() {
     pinMode(pinoLampada, OUTPUT);
 }
 
-void validarLuz(struct ts *dataHora, struct agenda *progLuz) {
+bool validarLuz(struct ts *dataHora, struct agenda *progLuz) {
     bool valido = progLuz->validar(dataHora, true);
-    digitalWrite(pinoLamapada, valido);
+    digitalWrite(pinoLampada, !valido);
+    return valido;
 }

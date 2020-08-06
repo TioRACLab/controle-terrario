@@ -1,3 +1,9 @@
+/**
+* Módulo de estrutura de programação dos processos
+* Autor: Ricardo Augusto Coelho
+* TioRACLAb
+*/
+
 #include "agenda.h"
 #include <ds3231.h>
 
@@ -8,6 +14,9 @@ uint32_t agenda::get_unixtime(struct ts *t)
     return (t->year - 1970) * 31536000 + (t->yday - 1 + (y / 4) - (y / 100) + (y / 400) - 89) * 86400 + t->hour * 3600 + t->min * 60 + t->sec;
 }
 
+/**
+ * Verifica se a data hora está dentro da programação.
+ */
 bool agenda::validar(struct ts *dataHora, bool tempoMinutos) {
     struct ts dataInicio;
 
@@ -62,6 +71,10 @@ bool agenda::validar(struct ts *dataHora, bool tempoMinutos) {
 
         return false;
     }
+
+    //Automático
+    if (this->tipo == 3)
+        return true;
 
     //Tipo de programacao manual e desconhecido.
     return false;

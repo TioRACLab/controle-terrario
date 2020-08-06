@@ -14,6 +14,7 @@ https://github.com/TioRACLab/controle-terrario
 #include "moduloLuz.h"
 #include "agenda.h"
 #include "painel.h"
+#include "hidraulica.h"
 
 struct agenda prog;
 
@@ -28,6 +29,7 @@ void setup() {
 
     initLuz();
     initPainel();
+    initHidraulica();
 
     Serial.println("Terrario configurado");
 }
@@ -44,8 +46,14 @@ void loop() {
     prog.valor3 = 18;
     prog.valor4 = 0;
 
+    struct agenda progC;
+
+    progC.tipo = 3;
+
     obterDataHora(&dataHora);
     validarLuz(&dataHora, &prog);
+    processarHidraulica(&dataHora, &prog, &progC);
+
     mostrarPainel(&dataHora, "Estamos evoluindo!!!");
     
     

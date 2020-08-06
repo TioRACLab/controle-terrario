@@ -15,6 +15,7 @@ https://github.com/TioRACLab/controle-terrario
 #include "agenda.h"
 #include "painel.h"
 #include "hidraulica.h"
+#include "controleTrem.h"
 
 struct agenda prog;
 
@@ -30,6 +31,7 @@ void setup() {
     initLuz();
     initPainel();
     initHidraulica();
+    initTrem();
 
     Serial.println("Terrario configurado");
 }
@@ -53,6 +55,7 @@ void loop() {
     obterDataHora(&dataHora);
     validarLuz(&dataHora, &prog);
     processarHidraulica(&dataHora, &prog, &progC);
+    processarTrem(&dataHora, &prog);
 
     mostrarPainel(&dataHora, "Estamos evoluindo!!!");
     

@@ -13,4 +13,4 @@
 //Pinos de controle do trenzinho.
 #define pinoTrem1 12
 #define pinoTrem2 11
-#define pinoTrem3 10
+#define pinoTremENA 10 //ENA

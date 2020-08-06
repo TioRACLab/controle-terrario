@@ -10,48 +10,101 @@ void initHidraulica() {
     pinMode(pinoReservatorio, OUTPUT);
 }
 
-void ativarIrrigacao() {
-    digitalWrite(pinoCachoeira, LOW);
-    digitalWrite(pinoIrrigacao, HIGH);
-    digitalWrite(pinoBombaPrincipal, HIGH);
+/**
+ * Obtem nível da água do lago. 0 = Muito baixo, 1 = Baixo, 2 = Alto
+ */
+int obterNivelAgua() {
+    int valor = analogRead(pinoSensorLago);
+
+    if (valor >= 390)
+        return 2;
+    
+    if (valor >= 300)
+        return 1;
+
+    return 0;
 }
 
-void ativarCachoeira() {
-    digitalWrite(pinoCachoeira, HIGH);
-    digitalWrite(pinoIrrigacao, LOW);
-    digitalWrite(pinoBombaPrincipal, HIGH);
+/**
+ * Obtem nível da água do reservatório. True bom, False baixo
+ */
+bool obterNivelReservatorio() {
+    return analogRead(pinoSensorReservatorio) > 900;
 }
 
+/**
+ * Desativa a bomba principal e as válvulas
+ */
 void desativarBombaPrincipal() {
     digitalWrite(pinoBombaPrincipal, LOW);
     digitalWrite(pinoCachoeira, LOW);
     digitalWrite(pinoIrrigacao, LOW);
 }
 
+/**
+ * Ativa a irrigação, se não houver água no lago, desativa tudo.
+ */
+void ativarIrrigacao() {
+    if (obterNivelAgua() >= 1) {
+        digitalWrite(pinoCachoeira, LOW);
+        digitalWrite(pinoIrrigacao, HIGH);
+        digitalWrite(pinoBombaPrincipal, HIGH);
+    }
+    else {
+        desativarBombaPrincipal();
+    }
+}
+
+/**
+ * Ativa a cachoeira, se não houver água no lago, desativa tudo.
+ */
+void ativarCachoeira() {
+    if (obterNivelAgua() >= 1) {
+        digitalWrite(pinoCachoeira, HIGH);
+        digitalWrite(pinoIrrigacao, LOW);
+        digitalWrite(pinoBombaPrincipal, HIGH);
+    }
+    else {
+        desativarBombaPrincipal();
+    }
+}
+
+/**
+ * Verifica a reposição da água do reservatório para o lago.
+ */
 bool verificarReposicaoAgua() {
+    if (obterNivelAgua() < 2) {
+        digitalWrite(pinoReservatorio, HIGH);
+        return true;
+    }
+    
+    digitalWrite(pinoReservatorio, LOW);
     return false;
 }
 
+/**
+ * Verifica o agendamento da irrigação e da cachoeira.
+ */
 int processarHidraulica(struct ts *dataHora, struct agenda *progIrrigacao, struct agenda *progCachoeira) {
-    int estadoHidraulica = 0; // 0 = Tudo desativado, 1 = Irrigacao, 2 = Cachoeira, 3 = Repondo água
+    int estadoHidraulica = 0; // 0 = Tudo desativado, 1 = Irrigacao, 2 = Cachoeira, 3 = Repondo água, -1 = Lago em baixo nível, -2 = Reservatório baixo nível
 
     if (progIrrigacao->validar(dataHora, false)) {
-        Serial.println("Irrigacao ativa.");
         estadoHidraulica = 1;
         ativarIrrigacao();
     }
     else if (progCachoeira->validar(dataHora, true)) {
-        Serial.println("Cachoeira ativa.");
         estadoHidraulica = 2;
         ativarCachoeira();
     }
     else {
-        Serial.println("Desativar bomba principal");
         desativarBombaPrincipal();
     }
 
     if (verificarReposicaoAgua())
         estadoHidraulica = 3;
+
+    if (obterNivelReservatorio())
+        estadoHidraulica = -2;
 
     return estadoHidraulica;
 }

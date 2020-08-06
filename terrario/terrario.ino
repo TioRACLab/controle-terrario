@@ -9,6 +9,7 @@ https://github.com/TioRACLab/controle-terrario
 
 #include <Wire.h>
 
+
 #include "pinagem.h"
 #include "controleDataHora.h"
 #include "moduloLuz.h"
@@ -39,8 +40,7 @@ void setup() {
 }
 
 void loop() {
-    //Serial.println("Loop");
-
+    
     struct ts dataHora;
     struct agenda prog;
 
@@ -58,8 +58,13 @@ void loop() {
     validarLuz(&dataHora, &prog);
     processarHidraulica(&dataHora, &prog, &progC);
     processarTrem(&dataHora, &prog);
+    //TODO: Atmosfera
 
-    mostrarPainel(&dataHora, "Estamos evoluindo!!!");
+    
+    int valor = analogRead(pinoSensorLago);
+    Serial.println(valor);
+
+    mostrarPainel(&dataHora, "Mensagem");
     
     
     //Serial.println(validarLuz());

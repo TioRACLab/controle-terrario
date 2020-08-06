@@ -66,9 +66,6 @@ bool agenda::validar(struct ts *dataHora, bool tempoMinutos) {
             return (stampInicio <= stampAtual && stampAtual <= stampFim);
         }
 
-        Serial.print("Nao ativo - ");
-        Serial.println(dataHora->wday);
-
         return false;
     }
 

@@ -10,6 +10,11 @@
 #define pinoArcoIris 3
 #define pinoReleExtra1 2
 
+//Pinagens Sensores Hidráulicos
+
+#define pinoSensorLago 21 //A7
+#define pinoSensorReservatorio 20 //A6
+
 //Pinos de controle do trenzinho.
 #define pinoTrem1 12
 #define pinoTrem2 11

@@ -9,7 +9,12 @@ void initPainel() {
     lcd.init();
 }
 
-void mostrarPainel(struct ts *dataHora, const char* menssagem) {
+void trocarMensagem(const char* mensagem) {
+    lcd.setCursor(0,1);
+    lcd.print(mensagem);
+}
+
+void mostrarPainel(struct ts *dataHora, const char* mensagem) {
     lcd.backlight();
     lcd.setCursor(0,0);
 
@@ -35,7 +40,5 @@ void mostrarPainel(struct ts *dataHora, const char* menssagem) {
         lcd.print(0);
     lcd.print(dataHora->min);
 
-    
-    lcd.setCursor(0,1);
-    lcd.print(menssagem);
+    trocarMensagem(mensagem);
 }

@@ -74,4 +74,19 @@ void loop() {
         mensagem = String("**NIVEL BAIXO**");
 
     mostrarPainel(&dataHora, mensagem.c_str());
+    testar();
+}
+
+void testar() {
+    prepararTesteLuz();
+    prepararHidraulica();
+    prepararTesteAtmosfera();
+    prepararTesteTrem();
+    
+    delay(200);
+
+    rodarTesteLuz();
+    rodarTesteHidraulica();
+    rodarTesteAtmosfera();
+    rodarTesteTrem();
 }

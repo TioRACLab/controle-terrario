@@ -36,6 +36,8 @@ void setup() {
     initTrem();
     initAtmosfesra();
 
+    pinMode(pinoBotao, INPUT);
+
     Serial.println("Terrario configurado");
 }
 
@@ -74,7 +76,9 @@ void loop() {
         mensagem = String("**NIVEL BAIXO**");
 
     mostrarPainel(&dataHora, mensagem.c_str());
-    testar();
+
+    if (digitalRead(pinoBotao))
+        testar();
 }
 
 void testar() {
@@ -83,7 +87,7 @@ void testar() {
     prepararTesteAtmosfera();
     prepararTesteTrem();
     
-    delay(200);
+    delay(1000);
 
     rodarTesteLuz();
     rodarTesteHidraulica();

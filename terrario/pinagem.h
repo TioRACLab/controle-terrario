@@ -20,3 +20,6 @@
 #define pinoTrem1 12
 #define pinoTrem2 11
 #define pinoTremENA 10 //ENA
+
+
+#define pinoBotao 13

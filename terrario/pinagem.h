@@ -2,13 +2,13 @@
 //Constantes ou Defines
 //Pinos que se comunicam com o módulo relê.
 #define pinoLampada 9
-#define pinoBombaPrincipal 8
-#define pinoCachoeira 7
-#define pinoIrrigacao 6
-#define pinoReservatorio 5
-#define pinoNeblina 4
-#define pinoArcoIris 3
-#define pinoReleExtra1 2
+#define pinoLampadaEspectro 8
+#define pinoBombaPrincipal 7
+#define pinoCachoeira 6
+#define pinoIrrigacao 5
+#define pinoReservatorio 4
+#define pinoNeblina 3
+#define pinoArcoIris 2
 
 
 //Pinagens Sensores Hidráulicos

@@ -1,6 +1,3 @@
-
-
-
 /*
 Sistema de controle do terrário!
 https://github.com/TioRACLab/controle-terrario
@@ -8,7 +5,6 @@ https://github.com/TioRACLab/controle-terrario
 
 
 #include <Wire.h>
-
 
 #include "pinagem.h"
 #include "controleDataHora.h"
@@ -28,21 +24,20 @@ void setup() {
     Wire.begin();
 
     initDataHora();
-    setarDataHora(2020, 8, 5, 18, 32, 00);
+    //setarDataHora(2020, 10, 31, 14, 48, 00);
 
     initLuz();
-    initPainel();
+    /*initPainel();
     initHidraulica();
     initTrem();
-    initAtmosfesra();
+    initAtmosfesra();*/
 
-    pinMode(pinoBotao, INPUT);
+    //pinMode(pinoBotao, INPUT);
 
     Serial.println("Terrario configurado");
 }
 
 void loop() {
-    
     struct ts dataHora;
     struct agenda prog;
 
@@ -55,16 +50,16 @@ void loop() {
     struct agenda progC;
 
     progC.tipo = 3;
-
     obterDataHora(&dataHora);
+    
     bool dia = validarLuz(&dataHora, &prog);
-    int statusHidraulica = processarHidraulica(&dataHora, &prog, &progC);
-    processarTrem(&dataHora, &prog);
+    /*int statusHidraulica = processarHidraulica(&dataHora, &prog, &progC);
+    processarTrem(&dataHora, &prog);*/
     //TODO: Atmosfera
 
     int valor = analogRead(pinoSensorLago);
 
-    String mensagem;
+    /*String mensagem;
     
     mensagem = String(dia ? "Dia" : "Noite");
 
@@ -75,10 +70,10 @@ void loop() {
     else if (statusHidraulica == -2)
         mensagem = String("**NIVEL BAIXO**");
 
-    mostrarPainel(&dataHora, mensagem.c_str());
+    mostrarPainel(&dataHora, mensagem.c_str());*/
 
-    if (digitalRead(pinoBotao))
-        testar();
+    /*if (digitalRead(pinoBotao))
+        testar();*/
 }
 
 void testar() {

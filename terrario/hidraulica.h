@@ -1,12 +1,20 @@
+/**
+* Header do módulo de hidráulica
+* 
+* Autor: Ricardo Augusto Coelho
+* Site: https://tioraclab.com
+* TioRACLAb
+*/
 
+#define NivelLagoAlto 380   //Valor mínimo para identificar o lago como nível alto.
+#define NivelLagoMedio 300  //Valor mínimo para identificar o lago como nível médio.
+
+/**
+ * Inicializa todas as pinagens hidráulica 
+ */
 void initHidraulica();
 
 /**
  * Verifica o agendamento da irrigação e da cachoeira.
- * 0 = Tudo desativado, 1 = Irrigacao, 2 = Cachoeira, 3 = Repondo água, -1 = Lago em baixo nível, -2 = Reservatório baixo nível
  */
-int processarHidraulica(struct ts *dataHora, struct agenda *progIrrigacao, struct agenda *progCachoeira);
-
-void prepararHidraulica();
-
-void rodarTesteHidraulica();
+void processarHidraulica(struct ts *dataHora, uint16_t *status);

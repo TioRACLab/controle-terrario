@@ -1,12 +1,16 @@
-/*
+/**
 * Sistema de controle do terrário!
+* 
+* Autor: Ricardo Augusto Coelho
+* TioRACLAb
+*
+* Site: https://tioraclab.com
 * https://github.com/TioRACLab/controle-terrario
 */
 
-
 #include <Wire.h>
 
-#include "pinagem.h"
+#include "terrarioCentral.h"
 #include "controleDataHora.h"
 #include "moduloLuz.h"
 #include "agenda.h"
@@ -15,9 +19,13 @@
 #include "controleTrem.h"
 #include "atmosfera.h"
 
+/**
+ * Inicializar sistema de terrário, configurações de pinagens
+ */
 void setup() {
 
     initLuz();
+    initHidraulica();
 
     Serial.begin(9600);
     Serial.println("Sistema do terrario está iniciando");
@@ -29,7 +37,7 @@ void setup() {
 
     
     initPainel();
-    /*initHidraulica();
+    /*
     initTrem();
     initAtmosfesra();*/
 
@@ -38,6 +46,9 @@ void setup() {
     Serial.println("Terrario configurado");
 }
 
+/**
+ * Looping principal da programação do terrário
+ */
 void loop() {
     uint16_t status = STS_DESLIGADO;
     struct ts dataHora;

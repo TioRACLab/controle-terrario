@@ -1,3 +1,10 @@
+/**
+* Header definições gerais do terrário 
+* 
+* Autor: Ricardo Augusto Coelho
+* Site: https://tioraclab.com
+* TioRACLAb
+*/
 
 //Constantes ou Defines
 //Pinos que se comunicam com o módulo relê.
@@ -42,3 +49,13 @@
 #define STS_TREM_LENTO 8192         //Velocidade do trêm é lenta.
 #define STS_TREM_MEDIO 16384        //Velocidade do trêm é mediana.
 #define STS_TREM_RAPIDO 32768       //Velocidade do trêm é rápido.
+
+/**
+ * Valida se o status está valido
+ */
+bool validarStatus(uint16_t *status, uint16_t valor);
+
+/**
+ * Atualiza o valor do status adicionando um novo valor
+ */
+void atualizarStatus(uint16_t *status, uint16_t valor);

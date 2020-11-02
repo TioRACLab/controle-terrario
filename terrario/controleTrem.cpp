@@ -1,6 +1,6 @@
 #include <ds3231.h>
 #include "agenda.h"
-#include "pinagem.h"
+#include "terrarioCentral.h"
 #include "controleTrem.h"
 #include "painel.h"
 

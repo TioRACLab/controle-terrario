@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "pinagem.h"
+#include "terrarioCentral.h"
 #include "atmosfera.h"
 #include "painel.h"
 

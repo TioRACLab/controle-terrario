@@ -2,6 +2,7 @@
 * Controle do painel de LCD
 * 
 * Autor: Ricardo Augusto Coelho
+* Site: https://tioraclab.com
 * TioRACLAb
 */
 
@@ -11,19 +12,21 @@
 #include <LiquidCrystal_I2C.h>
 
 #include "painel.h"
-#include "pinagem.h"
+#include "terrarioCentral.h"
 
 LiquidCrystal_I2C lcd(0x27,20,4);
 
+/**
+ * Inicializa o painel LCD
+ */
 void initPainel() {
     lcd.init();
     lcd.backlight();
 }
 
-bool validarStatus(uint16_t *status, uint16_t valor) {
-    return (*status & valor) == valor;
-}
-
+/**
+ * Mostra data e hora atual na primeira linha do LCD
+ */
 void mostrarDatahora(struct ts *dataHora) {
     lcd.setCursor(0,0);
 
@@ -50,17 +53,33 @@ void mostrarDatahora(struct ts *dataHora) {
     lcd.print(dataHora->min);
 }
 
+/**
+ * Mostra mensagem do status na segunda linha do LCD
+ */
 void mostrarMensagem(uint16_t *status) {
     lcd.setCursor(0,1);
     
-    if (validarStatus(status, STS_ILUMINACAO)) {
+    /*if (validarStatus(status, STS_ILUMINACAO)) {
         lcd.print("Luz: Ligada");
     }
     else {
         lcd.print("Luz: Apagada");
+    }*/
+
+    if (validarStatus(status, STS_LAGO_ALTO)) {
+        lcd.print("Lago: N. Alto");
+    }
+    else if (validarStatus(status, STS_LAGO_MEDIO)) {
+        lcd.print("Lago: N. Médio");
+    }
+    else {
+        lcd.print("Lago: N. Baixo");
     }
 }
 
+/**
+ * Atualiza informações mostradas no painel LCD
+ */
 void mostrarPainel(struct ts *dataHora, uint16_t *status) {
     mostrarDatahora(dataHora);
     mostrarMensagem(status);

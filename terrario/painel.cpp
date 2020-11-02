@@ -1,21 +1,30 @@
-#include "painel.h"
+/**
+* Controle do painel de LCD
+* 
+* Autor: Ricardo Augusto Coelho
+* TioRACLAb
+*/
+
+#include <Arduino.h>
 #include <Wire.h>
 #include <ds3231.h>
 #include <LiquidCrystal_I2C.h>
+
+#include "painel.h"
+#include "pinagem.h"
 
 LiquidCrystal_I2C lcd(0x27,20,4);
 
 void initPainel() {
     lcd.init();
-}
-
-void trocarMensagem(const char* mensagem) {
-    lcd.setCursor(0,1);
-    lcd.print(mensagem);
-}
-
-void mostrarPainel(struct ts *dataHora, const char* mensagem) {
     lcd.backlight();
+}
+
+bool validarStatus(uint16_t *status, uint16_t valor) {
+    return (*status & valor) == valor;
+}
+
+void mostrarDatahora(struct ts *dataHora) {
     lcd.setCursor(0,0);
 
     if (dataHora->mday <= 9)
@@ -39,6 +48,20 @@ void mostrarPainel(struct ts *dataHora, const char* mensagem) {
     if (dataHora->min <= 9)
         lcd.print(0);
     lcd.print(dataHora->min);
+}
 
-    trocarMensagem(mensagem);
+void mostrarMensagem(uint16_t *status) {
+    lcd.setCursor(0,1);
+    
+    if (validarStatus(status, STS_ILUMINACAO)) {
+        lcd.print("Luz: Ligada");
+    }
+    else {
+        lcd.print("Luz: Apagada");
+    }
+}
+
+void mostrarPainel(struct ts *dataHora, uint16_t *status) {
+    mostrarDatahora(dataHora);
+    mostrarMensagem(status);
 }

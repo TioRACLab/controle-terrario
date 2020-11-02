@@ -22,20 +22,3 @@ void desabilitarAtmosfera() {
     digitalWrite(pinoNeblina, HIGH);
     digitalWrite(pinoArcoIris, HIGH);
 }
-
-void prepararTesteAtmosfera() {
-    digitalWrite(pinoArcoIris, HIGH);
-    digitalWrite(pinoNeblina, HIGH);
-}
-
-void rodarTesteAtmosfera() {
-    trocarMensagem("T: Neblina      ");
-    digitalWrite(pinoNeblina, LOW);
-    delay(2000);
-    digitalWrite(pinoNeblina, HIGH);
-
-    trocarMensagem("T: Arco Iris    ");
-    digitalWrite(pinoArcoIris, LOW);
-    delay(2000);
-    digitalWrite(pinoArcoIris, HIGH);
-}

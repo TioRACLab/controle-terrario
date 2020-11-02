@@ -110,32 +110,3 @@ int processarHidraulica(struct ts *dataHora, struct agenda *progIrrigacao, struc
 
     return estadoHidraulica;
 }
-
-void prepararHidraulica() {
-    digitalWrite(pinoCachoeira, HIGH);
-    digitalWrite(pinoIrrigacao, HIGH);
-    digitalWrite(pinoBombaPrincipal, HIGH);
-    digitalWrite(pinoReservatorio, HIGH);
-}
-
-void rodarTesteHidraulica() {
-    trocarMensagem("T: Bomba Lago   ");
-    digitalWrite(pinoBombaPrincipal, LOW);
-    delay(2000);
-    digitalWrite(pinoBombaPrincipal, HIGH);
-
-    trocarMensagem("T: Cachoeira    ");
-    digitalWrite(pinoCachoeira, LOW);
-    delay(2000);
-    digitalWrite(pinoCachoeira, HIGH);
-
-    trocarMensagem("T: Irrigacao    ");
-    digitalWrite(pinoIrrigacao, LOW);
-    delay(2000);
-    digitalWrite(pinoIrrigacao, HIGH);
-
-    trocarMensagem("T: Bomba Reservatorio");
-    digitalWrite(pinoReservatorio, LOW);
-    delay(2000);
-    digitalWrite(pinoReservatorio, HIGH);
-}

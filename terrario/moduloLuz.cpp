@@ -7,21 +7,16 @@
 
 void initLuz() {
     pinMode(pinoLampada, OUTPUT);
-}
+    pinMode(pinoLampadaEspectro, OUTPUT);
 
-bool validarLuz(struct ts *dataHora, struct agenda *progLuz) {
-    bool valido = progLuz->validar(dataHora, true);
-    digitalWrite(pinoLampada, !valido);
-    return valido;
-}
-
-void prepararTesteLuz() {
     digitalWrite(pinoLampada, HIGH);
+    digitalWrite(pinoLampadaEspectro, HIGH);
 }
 
-void rodarTesteLuz() {
-    trocarMensagem("T: Lampada     ");
-    digitalWrite(pinoLampada, LOW);
-    delay(2000);
-    digitalWrite(pinoLampada, HIGH);
+void validarLuz(struct ts *dataHora, uint16_t *status) {
+    struct agenda agendaLuz;
+    obterAgenda(&agendaLuz, 0);
+
+    *status = *status | (agendaLuz.validar(dataHora, true) * STS_ILUMINACAO);
+    digitalWrite(pinoLampada, (*status & STS_ILUMINACAO) != STS_ILUMINACAO);
 }

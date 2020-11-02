@@ -1,6 +1,6 @@
 /*
-Sistema de controle do terrário!
-https://github.com/TioRACLab/controle-terrario
+* Sistema de controle do terrário!
+* https://github.com/TioRACLab/controle-terrario
 */
 
 
@@ -15,9 +15,10 @@ https://github.com/TioRACLab/controle-terrario
 #include "controleTrem.h"
 #include "atmosfera.h"
 
-struct agenda prog;
-
 void setup() {
+
+    initLuz();
+
     Serial.begin(9600);
     Serial.println("Sistema do terrario está iniciando");
 
@@ -26,9 +27,9 @@ void setup() {
     initDataHora();
     //setarDataHora(2020, 10, 31, 14, 48, 00);
 
-    initLuz();
-    /*initPainel();
-    initHidraulica();
+    
+    initPainel();
+    /*initHidraulica();
     initTrem();
     initAtmosfesra();*/
 
@@ -38,54 +39,21 @@ void setup() {
 }
 
 void loop() {
+    uint16_t status = STS_DESLIGADO;
     struct ts dataHora;
-    struct agenda prog;
+    
+    //struct agenda progC;
+    //progC.tipo = 3;
 
-    prog.tipo = 1;
-    prog.valor1 = 12;
-    prog.valor2 = 0;
-    prog.valor3 = 18;
-    prog.valor4 = 0;
-
-    struct agenda progC;
-
-    progC.tipo = 3;
     obterDataHora(&dataHora);
     
-    bool dia = validarLuz(&dataHora, &prog);
+    validarLuz(&dataHora, &status);
     /*int statusHidraulica = processarHidraulica(&dataHora, &prog, &progC);
     processarTrem(&dataHora, &prog);*/
     //TODO: Atmosfera
 
-    int valor = analogRead(pinoSensorLago);
+    //int valor = analogRead(pinoSensorLago);
 
-    /*String mensagem;
-    
-    mensagem = String(dia ? "Dia" : "Noite");
 
-    if (statusHidraulica == 1)
-        mensagem.concat(", Irrigando");
-    else if (statusHidraulica == 3)
-        mensagem.concat(", Repondo Agua");
-    else if (statusHidraulica == -2)
-        mensagem = String("**NIVEL BAIXO**");
-
-    mostrarPainel(&dataHora, mensagem.c_str());*/
-
-    /*if (digitalRead(pinoBotao))
-        testar();*/
-}
-
-void testar() {
-    prepararTesteLuz();
-    prepararHidraulica();
-    prepararTesteAtmosfera();
-    prepararTesteTrem();
-    
-    delay(1000);
-
-    rodarTesteLuz();
-    rodarTesteHidraulica();
-    rodarTesteAtmosfera();
-    rodarTesteTrem();
+    mostrarPainel(&dataHora, &status);
 }

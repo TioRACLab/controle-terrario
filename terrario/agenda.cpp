@@ -76,3 +76,13 @@ bool agenda::validar(struct ts *dataHora, bool tempoMinutos) {
     //Tipo de programacao manual e desconhecido.
     return false;
 }
+
+void obterAgenda(struct agenda *agenda, uint8_t posicao) {
+    if (posicao == 0) {
+        agenda->tipo = 1;
+        agenda->valor1 = 12;
+        agenda->valor2 = 0;
+        agenda->valor3 = 18;
+        agenda->valor4 = 0;
+    }
+}

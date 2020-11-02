@@ -25,3 +25,5 @@ struct agenda {
     private:
         uint32_t get_unixtime(struct ts *t);
 };
+
+void obterAgenda(struct agenda *agenda, uint8_t posicao);

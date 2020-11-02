@@ -1,13 +1,18 @@
 /**
 * Módulo de estrutura de programação dos processos
+*
 * Autor: Ricardo Augusto Coelho
+* Site: https://tioraclab.com
 * TioRACLAb
 */
 
-#include "agenda.h"
+#include "programacao.h"
 #include <ds3231.h>
 
-uint32_t agenda::get_unixtime(struct ts *t)
+/**
+ * Obtem o tempo em unix a partir de uma estrutura de datetime
+ */
+uint32_t programacao::get_unixtime(struct ts *t)
 {
     uint16_t y;
     y = t->year - 1600; // cause this is the first year < at 1970 where year % 400 = 0
@@ -17,7 +22,7 @@ uint32_t agenda::get_unixtime(struct ts *t)
 /**
  * Verifica se a data hora está dentro da programação.
  */
-bool agenda::validar(struct ts *dataHora, bool tempoMinutos) {
+bool programacao::validar(struct ts *dataHora, bool tempoMinutos) {
     struct ts dataInicio;
 
     dataInicio.year = dataHora->year;
@@ -77,12 +82,12 @@ bool agenda::validar(struct ts *dataHora, bool tempoMinutos) {
     return false;
 }
 
-void obterAgenda(struct agenda *agenda, uint8_t posicao) {
+void obterprogramacao(struct programacao *programacao, uint8_t posicao) {
     if (posicao == 0) {
-        agenda->tipo = 1;
-        agenda->valor1 = 12;
-        agenda->valor2 = 0;
-        agenda->valor3 = 18;
-        agenda->valor4 = 0;
+        programacao->tipo = 1;
+        programacao->valor1 = 12;
+        programacao->valor2 = 0;
+        programacao->valor3 = 18;
+        programacao->valor4 = 0;
     }
 }

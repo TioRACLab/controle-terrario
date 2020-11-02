@@ -15,6 +15,6 @@
 void initHidraulica();
 
 /**
- * Verifica o agendamento da irrigação e da cachoeira.
+ * Verifica o programacaomento da irrigação e da cachoeira.
  */
 void processarHidraulica(struct ts *dataHora, uint16_t *status);

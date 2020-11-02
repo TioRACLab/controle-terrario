@@ -14,7 +14,7 @@
 #include "painel.h"
 #include "terrarioCentral.h"
 
-LiquidCrystal_I2C lcd(0x27,20,4);
+LiquidCrystal_I2C lcd(0x27, 20, 4);
 
 /**
  * Inicializa o painel LCD
@@ -60,20 +60,20 @@ void mostrarMensagem(uint16_t *status) {
     lcd.setCursor(0,1);
     
     /*if (validarStatus(status, STS_ILUMINACAO)) {
-        lcd.print("Luz: Ligada");
+        lcd.print("Luz: Ligada     ");
     }
     else {
-        lcd.print("Luz: Apagada");
+        lcd.print("Luz: Apagada    ");
     }*/
 
     if (validarStatus(status, STS_LAGO_ALTO)) {
-        lcd.print("Lago: N. Alto");
+        lcd.print("Lago: N. Alto   ");
     }
     else if (validarStatus(status, STS_LAGO_MEDIO)) {
-        lcd.print("Lago: N. Médio");
+        lcd.print("Lago: N. Médio  ");
     }
     else {
-        lcd.print("Lago: N. Baixo");
+        lcd.print("Lago: N. Baixo  ");
     }
 }
 

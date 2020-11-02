@@ -9,7 +9,7 @@
 #include <Arduino.h>
 #include <ds3231.h>
 #include "terrarioCentral.h"
-#include "agenda.h"
+#include "programacao.h"
 #include "moduloLuz.h"
 #include "painel.h"
 
@@ -28,9 +28,9 @@ void initLuz() {
  * Valida se deve iniciar o processo de luzes de acordo com a programação
  */
 void validarLuz(struct ts *dataHora, uint16_t *status) {
-    struct agenda agendaLuz;
-    obterAgenda(&agendaLuz, 0);
+    struct programacao programacaoLuz;
+    obterprogramacao(&programacaoLuz, 0);
 
-    atualizarStatus(status, agendaLuz.validar(dataHora, true) * STS_ILUMINACAO);
+    atualizarStatus(status, programacaoLuz.validar(dataHora, true) * STS_ILUMINACAO);
     digitalWrite(pinoLampada, validarStatus(status, STS_ILUMINACAO));
 }

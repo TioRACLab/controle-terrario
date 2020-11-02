@@ -1,7 +1,9 @@
 /**
 * Módulo de controle de Data Hora para tratamento no terrário
 * Esse módulo é responsável em setar e obter valores de data e hora atual.
+*
 * Autor: Ricardo Augusto Coelho
+* Site: https://tioraclab.com
 * TioRACLAb
 */
 
@@ -55,9 +57,6 @@ void obterDataHora(struct ts *dataHora) {
  */
 void initDataHora(){
     DS3231_init(DS3231_INTCN);
-
-    //TODO: Não setar a data e hota no INIT.
-    //setarDataHora(2020, 8, 5, 11, 25, 00);
 }
 
 /**

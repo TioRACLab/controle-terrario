@@ -1,5 +1,5 @@
 #include <ds3231.h>
-#include "agenda.h"
+#include "programacao.h"
 #include "terrarioCentral.h"
 #include "controleTrem.h"
 #include "painel.h"
@@ -30,7 +30,7 @@ void pararTrem() {
     analogWrite(pinoTremENA, 0);
 }
 
-int processarTrem(struct ts *dataHora, struct agenda *prog) {
+int processarTrem(struct ts *dataHora, struct programacao *prog) {
     if (prog->validar(dataHora, true)) {
         movimentar(true, 255);
     }

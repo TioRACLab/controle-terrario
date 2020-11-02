@@ -9,11 +9,10 @@
 */
 
 #include <Wire.h>
-
 #include "terrarioCentral.h"
 #include "controleDataHora.h"
 #include "moduloLuz.h"
-#include "agenda.h"
+#include "programacao.h"
 #include "painel.h"
 #include "hidraulica.h"
 #include "controleTrem.h"
@@ -26,6 +25,9 @@ void setup() {
 
     initLuz();
     initHidraulica();
+    /*
+    initTrem();
+    initAtmosfesra();*/
 
     Serial.begin(9600);
     Serial.println("Sistema do terrario está iniciando");
@@ -35,13 +37,7 @@ void setup() {
     initDataHora();
     //setarDataHora(2020, 10, 31, 14, 48, 00);
 
-    
     initPainel();
-    /*
-    initTrem();
-    initAtmosfesra();*/
-
-    //pinMode(pinoBotao, INPUT);
 
     Serial.println("Terrario configurado");
 }
@@ -53,7 +49,7 @@ void loop() {
     uint16_t status = STS_DESLIGADO;
     struct ts dataHora;
     
-    //struct agenda progC;
+    //struct programacao progC;
     //progC.tipo = 3;
 
     obterDataHora(&dataHora);

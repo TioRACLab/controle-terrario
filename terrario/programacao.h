@@ -1,16 +1,17 @@
 /**
 * Módulo de estrutura de programação dos processos
+*
 * Autor: Ricardo Augusto Coelho
+* Site: https://tioraclab.com
 * TioRACLAb
 */
-
 
 #include <Arduino.h>
 
 /**
  * Informações de programacao automatizada
  */
-struct agenda {
+struct programacao {
     uint8_t tipo;       //0 = Manual, 1 = Diario, 2 = Semanal, 3 = Automatico
     uint8_t valor1;     //Diario = Hora inicio, Semanal = Dia Semana
     uint8_t valor2;     //Diario = Minuto inicio, Semana = Hora Inicio
@@ -23,7 +24,14 @@ struct agenda {
     bool validar(struct ts *dataHora, bool tempoMinutos);
 
     private:
+
+        /**
+         * Obtem o tempo em unix a partir de uma estrutura de datetime
+         */
         uint32_t get_unixtime(struct ts *t);
 };
 
-void obterAgenda(struct agenda *agenda, uint8_t posicao);
+/**
+ * Obtem a programação desejada
+ */
+void obterprogramacao(struct programacao *programacao, uint8_t posicao);

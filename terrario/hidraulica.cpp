@@ -9,7 +9,7 @@
 #include <Arduino.h>
 #include "hidraulica.h"
 #include "terrarioCentral.h"
-#include "agenda.h"
+#include "programacao.h"
 #include "painel.h"
 #include <ds3231.h>
 
@@ -99,7 +99,7 @@ bool verificarReposicaoAgua() {
 }
 
 /**
- * Verifica o agendamento da irrigação e da cachoeira.
+ * Verifica o programacaomento da irrigação e da cachoeira.
  * 0 = Tudo desativado, 1 = Irrigacao, 2 = Cachoeira, 3 = Repondo água, -1 = Lago em baixo nível, -2 = Reservatório baixo nível
  */
 void processarHidraulica(struct ts *dataHora, uint16_t *status) {

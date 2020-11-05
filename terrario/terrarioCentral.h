@@ -27,7 +27,7 @@
 #define pinoTrem2 11
 #define pinoTremENA 10 //ENA
 
-#define pinoBotao 13
+#define pinoInterruptorLuz 13
 
 //Status do Terrário
 
@@ -43,7 +43,6 @@
 #define STS_IRRIGACAO 256           //Válvula da irrigação ligada.
 #define STS_NEBLINA 512             //Os nebolizadores estão ligados.
 #define STS_ARCOIRIS 1024           //O arco íris está ligado.
-
 #define STS_TREM_FRENTE 2048        //O trêm está andando para frente.
 #define STS_TREM_REVERSO 4096       //O três está andando para trás.
 #define STS_TREM_LENTO 8192         //Velocidade do trêm é lenta.

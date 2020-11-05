@@ -40,6 +40,8 @@ void setup() {
     initPainel();
 
     Serial.println("Terrario configurado");
+
+    delay(3000); //Proteção de energia interrupta
 }
 
 /**

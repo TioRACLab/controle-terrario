@@ -13,12 +13,15 @@
 #include "moduloLuz.h"
 #include "painel.h"
 
+int estadoManualLuz = 0;
+
 /**
  * Inicializa o módulo de luzes 
  */
 void initLuz() {
     pinMode(pinoLampada, OUTPUT);
     pinMode(pinoLampadaEspectro, OUTPUT);
+    pinMode(pinoInterruptorLuz, INPUT); 
 
     digitalWrite(pinoLampada, HIGH);
     digitalWrite(pinoLampadaEspectro, HIGH);
@@ -28,9 +31,18 @@ void initLuz() {
  * Valida se deve iniciar o processo de luzes de acordo com a programação
  */
 void validarLuz(struct ts *dataHora, uint16_t *status) {
-    struct programacao programacaoLuz;
-    obterprogramacao(&programacaoLuz, 0);
 
-    atualizarStatus(status, programacaoLuz.validar(dataHora, true) * STS_ILUMINACAO);
+    estadoManualLuz = digitalRead(pinoInterruptorLuz);
+
+    if (estadoManualLuz == 1) {
+        atualizarStatus(status, STS_ILUMINACAO);
+    } 
+    else {
+        struct programacao programacaoLuz;
+        obterprogramacao(&programacaoLuz, 0);
+
+        atualizarStatus(status, programacaoLuz.validar(dataHora, true) * STS_ILUMINACAO);
+    }
+
     digitalWrite(pinoLampada, validarStatus(status, STS_ILUMINACAO));
 }

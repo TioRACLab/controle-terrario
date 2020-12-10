@@ -44,8 +44,9 @@ void obterNivelLago(uint16_t *status) {
 /**
  * Obtem nível da água do reservatório. True bom, False baixo
  */
-bool obterNivelReservatorio() {
-    return analogRead(pinoSensorReservatorio) > 900;
+void obterNivelReservatorio(uint16_t *status) {
+    if (analogRead(pinoSensorReservatorio) < NivelReservatorio)
+        atualizarStatus(status, STS_RESERVATORIO);
 }
 
 /**
@@ -105,7 +106,7 @@ bool verificarReposicaoAgua() {
 void processarHidraulica(struct ts *dataHora, uint16_t *status) {
     
     obterNivelLago(status);
-    
+    obterNivelReservatorio(status);
     /*int estadoHidraulica = 0; // 0 = Tudo desativado, 1 = Irrigacao, 2 = Cachoeira, 3 = Repondo água, -1 = Lago em baixo nível, -2 = Reservatório baixo nível
 
     if (progIrrigacao->validar(dataHora, false)) {

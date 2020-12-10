@@ -37,7 +37,6 @@ bool programacao::validar(struct ts *dataHora, bool tempoMinutos) {
         if (dataHora->hour < this->valor1 || dataHora->hour > this->valor3) {
             return false;
         }
-            
         
         if (dataHora->hour == this->valor1 && dataHora->min < this->valor2) {
             return false;
@@ -82,10 +81,20 @@ bool programacao::validar(struct ts *dataHora, bool tempoMinutos) {
     return false;
 }
 
+/**
+ * Obtem a programação desejada
+ */
 void obterprogramacao(struct programacao *programacao, uint8_t posicao) {
-    if (posicao == 0) {
+    if (posicao == PROG_ILUMINACAO) {
         programacao->tipo = 1;
-        programacao->valor1 = 12;
+        programacao->valor1 = 8;
+        programacao->valor2 = 0;
+        programacao->valor3 = 18;
+        programacao->valor4 = 0;
+    }
+    else if (posicao == PROG_ESPECTRO) {
+        programacao->tipo = 1;
+        programacao->valor1 = 8;
         programacao->valor2 = 0;
         programacao->valor3 = 18;
         programacao->valor4 = 0;

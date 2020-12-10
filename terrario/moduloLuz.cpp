@@ -39,10 +39,15 @@ void validarLuz(struct ts *dataHora, uint16_t *status) {
     } 
     else {
         struct programacao programacaoLuz;
-        obterprogramacao(&programacaoLuz, 0);
+        obterprogramacao(&programacaoLuz, PROG_ILUMINACAO);
 
         atualizarStatus(status, programacaoLuz.validar(dataHora, true) * STS_ILUMINACAO);
     }
 
-    digitalWrite(pinoLampada, validarStatus(status, STS_ILUMINACAO));
+    struct programacao programacaoEspectro;
+    obterprogramacao(&programacaoEspectro, PROG_ESPECTRO);
+
+    atualizarStatus(status, programacaoEspectro.validar(dataHora, true) * STS_ESPECTRO);
+
+    digitalWrite(pinoLampadaEspectro, validarStatus(status, STS_ESPECTRO));
 }

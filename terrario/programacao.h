@@ -8,6 +8,9 @@
 
 #include <Arduino.h>
 
+#define PROG_ILUMINACAO 0
+#define PROG_ESPECTRO 1
+
 /**
  * Informações de programacao automatizada
  */

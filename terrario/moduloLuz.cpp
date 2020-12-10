@@ -46,8 +46,8 @@ void validarLuz(struct ts *dataHora, uint16_t *status) {
 
     struct programacao programacaoEspectro;
     obterprogramacao(&programacaoEspectro, PROG_ESPECTRO);
-
     atualizarStatus(status, programacaoEspectro.validar(dataHora, true) * STS_ESPECTRO);
 
+    digitalWrite(pinoLampada, validarStatus(status, STS_ILUMINACAO));
     digitalWrite(pinoLampadaEspectro, validarStatus(status, STS_ESPECTRO));
 }

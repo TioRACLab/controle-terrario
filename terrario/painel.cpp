@@ -66,7 +66,7 @@ void mostrarMensagem(uint16_t *status) {
         lcd.print("Luz: Apagada    ");
     }*/
 
-    if (validarStatus(status, STS_LAGO_ALTO)) {
+    /*if (validarStatus(status, STS_LAGO_ALTO)) {
         lcd.print("Lago: N. Alto   ");
     }
     else if (validarStatus(status, STS_LAGO_MEDIO)) {
@@ -74,6 +74,13 @@ void mostrarMensagem(uint16_t *status) {
     }
     else {
         lcd.print("Lago: N. Baixo  ");
+    }*/
+
+    if (validarStatus(status, STS_RESERVATORIO)) {
+        lcd.print("Reserva Baixa   ");
+    }
+    else {
+        lcd.print("Reserva Alta    ");
     }
 }
 

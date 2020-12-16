@@ -14,7 +14,11 @@
 #include <ds3231.h>
 
 int reservaBaixa = 0;
+bool repondoLago = false;
 
+/**
+ * Desativa tudo do lago, bomba e válvulas.
+ */
 void desativarLagoIrrigacao() {
     digitalWrite(pinoBombaPrincipal, HIGH);
     digitalWrite(pinoCachoeira, HIGH);
@@ -46,8 +50,6 @@ void initHidraulica() {
  */
 void obterNivelLago(uint16_t *status) {
     int valor = analogRead(pinoSensorLago);
-    Serial.print("Valor lago: ");
-    Serial.println(valor);
 
     if (valor >= NivelLagoAlto)
         atualizarStatus(status, STS_LAGO_ALTO);
@@ -78,22 +80,34 @@ bool obterNivelReservatorio(uint16_t *status) {
 
 /**
  * Verifica a reposição da água do reservatório para o lago.
+ * Ativa reposição quando o nível médio não é lido no sensor.
+ * Desativa a reposição quando o nível alto é lido no sensor.
  */
 void verificarReposicaoAgua(uint16_t *status) {
     if (validarStatus(status, STS_LAGO_ALTO)) {
+        repondoLago = false;
         digitalWrite(pinoReservatorio, HIGH);
-        Serial.println("lago ok");
     }
     else {
-        digitalWrite(pinoReservatorio, LOW);
-        Serial.println("repor lago");
+        if (repondoLago) {
+            digitalWrite(pinoReservatorio, LOW);
+            atualizarStatus(status, STS_BOMBA_RESERVATORIO)
+        }
+        else if (validarStatus(status, STS_LAGO_MEDIO)) {
+            digitalWrite(pinoReservatorio, HIGH);
+        }
+        else {
+            repondoLago = true;
+            digitalWrite(pinoReservatorio, LOW);
+            atualizarStatus(status, STS_BOMBA_RESERVATORIO)
+        }
     }
 }
 
 /**
  * Ativa a irrigação, se não houver água no lago, desativa tudo.
  */
-void ativarIrrigacao() {
+void verificarIrrigacao(struct ts *dataHora, uint16_t *status) {
     /*if (obterNivelAgua() >= 1) {
         digitalWrite(pinoCachoeira, HIGH);
         digitalWrite(pinoIrrigacao, LOW);
@@ -107,7 +121,7 @@ void ativarIrrigacao() {
 /**
  * Ativa a cachoeira, se não houver água no lago, desativa tudo.
  */
-void ativarCachoeira() {
+void verificarCachoeira(uint16_t *status) {
     /*if (obterNivelAgua() >= 1) {
         digitalWrite(pinoCachoeira, LOW);
         digitalWrite(pinoIrrigacao, HIGH);
@@ -119,17 +133,17 @@ void ativarCachoeira() {
 }
 
 
-
 /**
  * Verifica o programacaomento da irrigação e da cachoeira.
  * 0 = Tudo desativado, 1 = Irrigacao, 2 = Cachoeira, 3 = Repondo água, -1 = Lago em baixo nível, -2 = Reservatório baixo nível
  */
 void processarHidraulica(struct ts *dataHora, uint16_t *status) {
-    
     obterNivelLago(status);
+
     if (obterNivelReservatorio(status)) {
         verificarReposicaoAgua(status);
-       
+        verificarIrrigacao(dataHora, status);
+        verificarCachoeira(status);
     }
     else {
         desativarHidraulica();

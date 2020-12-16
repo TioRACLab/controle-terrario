@@ -13,6 +13,22 @@
 #include "painel.h"
 #include <ds3231.h>
 
+int reservaBaixa = 0;
+
+void desativarLagoIrrigacao() {
+    digitalWrite(pinoBombaPrincipal, HIGH);
+    digitalWrite(pinoCachoeira, HIGH);
+    digitalWrite(pinoIrrigacao, HIGH);
+}
+
+/**
+ * Desativa todas as bombas e as válvulas
+ */
+void desativarHidraulica() {
+    desativarLagoIrrigacao();
+    digitalWrite(pinoReservatorio, HIGH);
+}
+
 /**
  * Inicializa todas as pinagens hidráulica 
  */
@@ -22,10 +38,7 @@ void initHidraulica() {
     pinMode(pinoIrrigacao, OUTPUT);
     pinMode(pinoReservatorio, OUTPUT);
 
-    digitalWrite(pinoBombaPrincipal, HIGH);
-    digitalWrite(pinoCachoeira, HIGH);
-    digitalWrite(pinoIrrigacao, HIGH);
-    digitalWrite(pinoReservatorio, HIGH);
+    desativarHidraulica();
 }
 
 /**
@@ -33,6 +46,8 @@ void initHidraulica() {
  */
 void obterNivelLago(uint16_t *status) {
     int valor = analogRead(pinoSensorLago);
+    Serial.print("Valor lago: ");
+    Serial.println(valor);
 
     if (valor >= NivelLagoAlto)
         atualizarStatus(status, STS_LAGO_ALTO);
@@ -44,18 +59,35 @@ void obterNivelLago(uint16_t *status) {
 /**
  * Obtem nível da água do reservatório. True bom, False baixo
  */
-void obterNivelReservatorio(uint16_t *status) {
-    if (analogRead(pinoSensorReservatorio) < NivelReservatorio)
-        atualizarStatus(status, STS_RESERVATORIO);
+bool obterNivelReservatorio(uint16_t *status) {
+    
+    if (analogRead(pinoSensorReservatorio) > NivelReservatorio) {
+        reservaBaixa++;
+
+        if (reservaBaixa >= 5) {
+            reservaBaixa = 5;
+            atualizarStatus(status, STS_RESERVATORIO);
+            return false;
+        }
+    }
+    else {
+        reservaBaixa = 0;
+        return true;
+    }
 }
 
 /**
- * Desativa a bomba principal e as válvulas
+ * Verifica a reposição da água do reservatório para o lago.
  */
-void desativarBombaPrincipal() {
-    digitalWrite(pinoBombaPrincipal, HIGH);
-    digitalWrite(pinoCachoeira, HIGH);
-    digitalWrite(pinoIrrigacao, HIGH);
+void verificarReposicaoAgua(uint16_t *status) {
+    if (validarStatus(status, STS_LAGO_ALTO)) {
+        digitalWrite(pinoReservatorio, HIGH);
+        Serial.println("lago ok");
+    }
+    else {
+        digitalWrite(pinoReservatorio, LOW);
+        Serial.println("repor lago");
+    }
 }
 
 /**
@@ -86,18 +118,7 @@ void ativarCachoeira() {
     }*/
 }
 
-/**
- * Verifica a reposição da água do reservatório para o lago.
- */
-bool verificarReposicaoAgua() {
-    /*if (obterNivelAgua() < 2) {
-        digitalWrite(pinoReservatorio, LOW);
-        return true;
-    }
-    
-    digitalWrite(pinoReservatorio, HIGH);*/
-    return false;
-}
+
 
 /**
  * Verifica o programacaomento da irrigação e da cachoeira.
@@ -106,26 +127,11 @@ bool verificarReposicaoAgua() {
 void processarHidraulica(struct ts *dataHora, uint16_t *status) {
     
     obterNivelLago(status);
-    obterNivelReservatorio(status);
-    /*int estadoHidraulica = 0; // 0 = Tudo desativado, 1 = Irrigacao, 2 = Cachoeira, 3 = Repondo água, -1 = Lago em baixo nível, -2 = Reservatório baixo nível
-
-    if (progIrrigacao->validar(dataHora, false)) {
-        estadoHidraulica = 1;
-        ativarIrrigacao();
-    }
-    else if (progCachoeira->validar(dataHora, true)) {
-        estadoHidraulica = 2;
-        ativarCachoeira();
+    if (obterNivelReservatorio(status)) {
+        verificarReposicaoAgua(status);
+       
     }
     else {
-        desativarBombaPrincipal();
+        desativarHidraulica();
     }
-
-    if (verificarReposicaoAgua())
-        estadoHidraulica = 3;
-
-    if (obterNivelReservatorio())
-        estadoHidraulica = -2;
-
-    return estadoHidraulica;*/
 }

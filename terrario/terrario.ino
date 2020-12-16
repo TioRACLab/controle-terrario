@@ -57,8 +57,8 @@ void loop() {
     obterDataHora(&dataHora);
     
     validarLuz(&dataHora, &status);
-    /*int statusHidraulica = processarHidraulica(&dataHora, &prog, &progC);
-    processarTrem(&dataHora, &prog);*/
+    processarHidraulica(&dataHora, &status);
+    //processarTrem(&dataHora, &prog);*/
     //TODO: Atmosfera
 
     //int valor = analogRead(pinoSensorLago);

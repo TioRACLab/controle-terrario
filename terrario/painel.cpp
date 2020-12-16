@@ -59,6 +59,13 @@ void mostrarDatahora(struct ts *dataHora) {
 void mostrarMensagem(uint16_t *status) {
     lcd.setCursor(0,1);
     
+    if (validarStatus(status, STS_RESERVATORIO)) {
+        lcd.print("Reserva Baixa   ");
+    }
+    else if (validarStatus(status, STS_LAGO_MEDIO)) {
+        lcd.print("Repondo Lago    ");
+    }
+
     /*if (validarStatus(status, STS_ILUMINACAO)) {
         lcd.print("Luz: Ligada     ");
     }
@@ -69,19 +76,12 @@ void mostrarMensagem(uint16_t *status) {
     /*if (validarStatus(status, STS_LAGO_ALTO)) {
         lcd.print("Lago: N. Alto   ");
     }
-    else if (validarStatus(status, STS_LAGO_MEDIO)) {
-        lcd.print("Lago: N. Médio  ");
-    }
+    
     else {
         lcd.print("Lago: N. Baixo  ");
     }*/
 
-    if (validarStatus(status, STS_RESERVATORIO)) {
-        lcd.print("Reserva Baixa   ");
-    }
-    else {
-        lcd.print("Reserva Alta    ");
-    }
+    
 }
 
 /**

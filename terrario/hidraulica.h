@@ -6,7 +6,7 @@
 * TioRACLAb
 */
 
-#define NivelLagoAlto 380   //Valor mínimo para identificar o lago como nível alto.
+#define NivelLagoAlto 370   //Valor mínimo para identificar o lago como nível alto.
 #define NivelLagoMedio 300  //Valor mínimo para identificar o lago como nível médio.
 #define NivelReservatorio 950
 

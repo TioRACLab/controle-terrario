@@ -82,11 +82,9 @@ bool obterNivelReservatorio(uint16_t *status) {
 void verificarReposicaoAgua(uint16_t *status) {
     if (validarStatus(status, STS_LAGO_ALTO)) {
         digitalWrite(pinoReservatorio, HIGH);
-        Serial.println("lago ok");
     }
     else {
         digitalWrite(pinoReservatorio, LOW);
-        Serial.println("repor lago");
     }
 }
 

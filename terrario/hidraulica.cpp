@@ -122,10 +122,13 @@ void verificarIrrigacao(struct ts *dataHora, uint16_t *status) {
  * Ativa a cachoeira, se não houver água no lago, desativa tudo.
  */
 void verificarCachoeira(uint16_t *status) { 
-    if (validarStatus(status, STS_LAGO_MEDIO)) {
+    digitalWrite(pinoCachoeira, LOW);
+    digitalWrite(pinoBombaPrincipal, LOW);
+
+    /*if (validarStatus(status, STS_LAGO_MEDIO)) {
         digitalWrite(pinoCachoeira, LOW);
         digitalWrite(pinoBombaPrincipal, LOW);
-
+        
         atualizarStatus(status, STS_BOMBA_LAGO);
         atualizarStatus(status, STS_CACHOEIRA);
     }
@@ -135,7 +138,7 @@ void verificarCachoeira(uint16_t *status) {
         }
         
         digitalWrite(pinoCachoeira, HIGH);
-    }
+    }*/
 }
 
 /**
@@ -147,7 +150,7 @@ void processarHidraulica(struct ts *dataHora, uint16_t *status) {
 
     if (obterNivelReservatorio(status)) {
         verificarReposicaoAgua(status);
-        verificarIrrigacao(dataHora, status);
+        //verificarIrrigacao(dataHora, status);
         verificarCachoeira(status);
     }
     else {

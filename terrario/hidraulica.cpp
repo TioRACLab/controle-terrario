@@ -122,16 +122,21 @@ void verificarIrrigacao(struct ts *dataHora, uint16_t *status) {
  * Ativa a cachoeira, se não houver água no lago, desativa tudo.
  */
 void verificarCachoeira(uint16_t *status) {
-    /*if (obterNivelAgua() >= 1) {
+    if (validarStatus(status, STS_LAGO_MEDIO)) {
         digitalWrite(pinoCachoeira, LOW);
-        digitalWrite(pinoIrrigacao, HIGH);
         digitalWrite(pinoBombaPrincipal, LOW);
+
+        atualizarStatus(status, STS_BOMBA_LAGO);
+        atualizarStatus(status, STS_CACHOEIRA);
     }
     else {
-        desativarBombaPrincipal();
-    }*/
+        if (!validarStatus(status, STS_IRRIGACAO)) {
+            digitalWrite(pinoBombaPrincipal, HIGH);    
+        }
+        
+        digitalWrite(pinoCachoeira, HIGH);
+    }
 }
-
 
 /**
  * Verifica o programacaomento da irrigação e da cachoeira.

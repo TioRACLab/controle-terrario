@@ -34,8 +34,8 @@
 #define STS_DESLIGADO 0             //Tudo desligado.
 #define STS_ILUMINACAO 1            //Luz de iluminação ligada.
 #define STS_ESPECTRO 2              //Luz de espectro vermleho para as plantas ligadas.
-#define STS_LAGO_MEDIO 4            //Nível do lago está no médio.
-#define STS_LAGO_ALTO 8             //Nível do lago está alto.
+#define STS_LAGO_NIVEL1 4           //Nível 1 do lago. (11 = Alto, 10 = Médio, 01 = Baixo, 00 = Vazio)
+#define STS_LAGO_NIVEL2 8           //Nível 2 do lago. (11 = Alto, 10 = Médio, 01 = Baixo, 00 = Vazio)
 #define STS_RESERVATORIO 16         //Nível do reservatório baixo.
 #define STS_BOMBA_LAGO 32           //Bomba do lago ligada.
 #define STS_BOMBA_RESERVATORIO 64   //Bomba do reservatório ligada.

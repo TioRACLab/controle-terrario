@@ -50,12 +50,18 @@ void initHidraulica() {
  */
 void obterNivelLago(uint16_t *status) {
     int valor = analogRead(pinoSensorLago);
+    Serial.println(valor);
 
-    if (valor >= NivelLagoAlto)
-        atualizarStatus(status, STS_LAGO_ALTO);
-    
-    if (valor >= NivelLagoMedio)
-        atualizarStatus(status, STS_LAGO_MEDIO);
+    if (valor >= NivelLagoAlto) {
+        atualizarStatus(status, STS_LAGO_NIVEL1);
+        atualizarStatus(status, STS_LAGO_NIVEL2);
+    }
+    else if (valor >= NivelLagoMedio) {
+        atualizarStatus(status, STS_LAGO_NIVEL1);
+    }
+    else if (valor >= NivelLagoBaixo) {
+        atualizarStatus(status, STS_LAGO_NIVEL2);
+    }
 }
 
 /**
@@ -84,7 +90,7 @@ bool obterNivelReservatorio(uint16_t *status) {
  * Desativa a reposição quando o nível alto é lido no sensor.
  */
 void verificarReposicaoAgua(uint16_t *status) {
-    if (validarStatus(status, STS_LAGO_ALTO)) {
+    if (validarStatus(status, STS_LAGO_NIVEL1) && validarStatus(status, STS_LAGO_NIVEL2)) {
         repondoLago = false;
         digitalWrite(pinoReservatorio, HIGH);
     }
@@ -93,7 +99,7 @@ void verificarReposicaoAgua(uint16_t *status) {
             digitalWrite(pinoReservatorio, LOW);
             atualizarStatus(status, STS_BOMBA_RESERVATORIO);
         }
-        else if (validarStatus(status, STS_LAGO_MEDIO)) {
+        else if (validarStatus(status, STS_LAGO_NIVEL1)) {
             digitalWrite(pinoReservatorio, HIGH);
         }
         else {
@@ -119,13 +125,13 @@ void verificarIrrigacao(struct ts *dataHora, uint16_t *status) {
 }
 
 /**
- * Ativa a cachoeira, se não houver água no lago, desativa tudo.
+ * Ativa a cachoeira, se no nível da água no lago for considerado vazio, desativa tudo.
  */
 void verificarCachoeira(uint16_t *status) { 
     digitalWrite(pinoCachoeira, LOW);
     digitalWrite(pinoBombaPrincipal, LOW);
 
-    /*if (validarStatus(status, STS_LAGO_MEDIO)) {
+    /*if (validarStatus(status, STS_LAGO_NIVEL1) || validarStatus(status, STS_LAGO_NIVEL2)) {
         digitalWrite(pinoCachoeira, LOW);
         digitalWrite(pinoBombaPrincipal, LOW);
         

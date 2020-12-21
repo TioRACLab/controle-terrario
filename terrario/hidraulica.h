@@ -7,7 +7,7 @@
 */
 
 #define NivelLagoAlto 370   //Valor mínimo para identificar o lago como nível alto.
-#define NivelLagoMedio 300  //Valor mínimo para identificar o lago como nível médio.
+#define NivelLagoMedio 250  //Valor mínimo para identificar o lago como nível médio.
 #define NivelLagoBaixo 100  //Valor mínimo para identificar o lago como nível baixo.
 #define NivelReservatorio 950
 

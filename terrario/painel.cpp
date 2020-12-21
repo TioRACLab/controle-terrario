@@ -62,8 +62,11 @@ void mostrarMensagem(uint16_t *status) {
     if (validarStatus(status, STS_RESERVATORIO)) {
         lcd.print("Reserva Baixa   ");
     }
-    else if (validarStatus(status, STS_LAGO_MEDIO)) {
+    else if (validarStatus(status, STS_BOMBA_RESERVATORIO)) {
         lcd.print("Repondo Lago    ");
+    }
+    else {
+        lcd.print("   BOM DIA!!!   ");
     }
 
     /*if (validarStatus(status, STS_ILUMINACAO)) {

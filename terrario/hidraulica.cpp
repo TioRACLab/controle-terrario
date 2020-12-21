@@ -15,6 +15,11 @@
 
 int reservaBaixa = 0;
 bool repondoLago = false;
+uint8_t contagemVazio = 0;
+uint8_t contagemBaixo = 0;
+uint8_t contagemMedio = 0;
+uint8_t contagemAlto = 0;
+uint8_t statusLago = 0;
 
 /**
  * Desativa tudo do lago, bomba e válvulas.
@@ -50,17 +55,72 @@ void initHidraulica() {
  */
 void obterNivelLago(uint16_t *status) {
     int valor = analogRead(pinoSensorLago);
+    Serial.print("Valor: ");
     Serial.println(valor);
 
     if (valor >= NivelLagoAlto) {
-        atualizarStatus(status, STS_LAGO_NIVEL1);
-        atualizarStatus(status, STS_LAGO_NIVEL2);
+        contagemVazio = 0;
+        contagemBaixo = 0;
+        contagemMedio = 0;
+        contagemAlto++;
+
+        if (contagemAlto > 3) {
+            contagemAlto = 0;
+            statusLago = 3;
+        }
     }
     else if (valor >= NivelLagoMedio) {
-        atualizarStatus(status, STS_LAGO_NIVEL1);
+        contagemVazio = 0;
+        contagemBaixo = 0;
+        contagemMedio++;
+        contagemAlto = 0;
+
+        if (contagemMedio > 3) {
+            contagemMedio = 0;
+            statusLago = 2;
+        }
     }
     else if (valor >= NivelLagoBaixo) {
-        atualizarStatus(status, STS_LAGO_NIVEL2);
+        contagemVazio = 0;
+        contagemBaixo++;
+        contagemMedio = 0;
+        contagemAlto = 0;
+
+        if (contagemBaixo > 3) {
+            contagemBaixo = 0;
+            statusLago = 1;
+            atualizarStatus(status, STS_LAGO_NIVEL2);
+        }
+    }
+    else {
+        contagemVazio++;
+        contagemBaixo = 0;
+        contagemMedio = 0;
+        contagemAlto = 0;
+
+        if (contagemVazio > 3) {
+            contagemVazio = 0;
+            statusLago = 0;
+        }
+    }
+
+    switch (statusLago)
+    {
+        case 3:
+            atualizarStatus(status, STS_LAGO_NIVEL1);
+            atualizarStatus(status, STS_LAGO_NIVEL2);
+            break;
+
+        case 2:
+            atualizarStatus(status, STS_LAGO_NIVEL1);
+            break;
+
+        case 1:
+            atualizarStatus(status, STS_LAGO_NIVEL2);
+            break;
+    
+        default:
+            break;
     }
 }
 

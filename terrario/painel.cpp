@@ -66,7 +66,7 @@ void mostrarMensagem(uint16_t *status) {
         lcd.print("Repondo Lago    ");
     }
     else {
-        lcd.print("   BOM DIA!!!   ");
+        lcd.print("    BOM DIA!    ");
     }
 
     /*if (validarStatus(status, STS_ILUMINACAO)) {

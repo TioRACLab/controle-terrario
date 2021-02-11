@@ -18,6 +18,8 @@
 #include "controleTrem.h"
 #include "atmosfera.h"
 
+uint16_t statusManual = STS_DESLIGADO;
+
 /**
  * Inicializar sistema de terrário, configurações de pinagens
  */
@@ -56,7 +58,7 @@ void loop() {
 
     obterDataHora(&dataHora);
     
-    validarLuz(&dataHora, &status);
+    validarLuz(&dataHora, &status, &statusManual);
     processarHidraulica(&dataHora, &status);
     //processarTrem(&dataHora, &prog);*/
     //TODO: Atmosfera
@@ -65,4 +67,7 @@ void loop() {
 
 
     mostrarPainel(&dataHora, &status);
+
+    Serial.print("Status: ");
+    Serial.println(status);
 }

@@ -13,8 +13,6 @@
 #include "moduloLuz.h"
 #include "painel.h"
 
-int estadoManualLuz = 0;
-
 /**
  * Inicializa o módulo de luzes 
  */
@@ -28,25 +26,59 @@ void initLuz() {
 }
 
 /**
- * Valida se deve iniciar o processo de luzes de acordo com a programação
+ * Valida se deve ligar ou não a luz natural.
+ * @param dataHora Ponteiro data hora atual do sistema
+ * @param status Ponteiro de status atual do sistema.
+ * @param statusManual Ponteiro de status desejado do sistema, para ativação de mecanismo manualmente.
  */
-void validarLuz(struct ts *dataHora, uint16_t *status) {
-
-    estadoManualLuz = digitalRead(pinoInterruptorLuz);
-
-    if (estadoManualLuz == 1) {
+void validarLuzNatural(struct ts *dataHora, uint16_t *status, uint16_t *statusManual) {
+    if (validarStatus(statusManual, STS_ILUMINACAO)) {
         atualizarStatus(status, STS_ILUMINACAO);
-    } 
+    }
     else {
-        struct programacao programacaoLuz;
-        obterprogramacao(&programacaoLuz, PROG_ILUMINACAO);
+        int estadoManualLuz = digitalRead(pinoInterruptorLuz);
 
-        atualizarStatus(status, programacaoLuz.validar(dataHora, true) * STS_ILUMINACAO);
+        if (estadoManualLuz == BOTAO_LUZ_ATIVO) {
+            atualizarStatus(status, STS_ILUMINACAO);
+        }
+        else {
+            struct programacao programacaoLuz;
+            obterprogramacao(&programacaoLuz, PROG_ILUMINACAO);
+
+            atualizarStatus(status, programacaoLuz.validar(dataHora, true) * STS_ILUMINACAO);
+        }
     }
 
-    struct programacao programacaoEspectro;
-    obterprogramacao(&programacaoEspectro, PROG_ESPECTRO);
-    atualizarStatus(status, programacaoEspectro.validar(dataHora, true) * STS_ESPECTRO);
+    
+}
+
+/**
+ * Valida se deve ligar ou não a luz espectro.
+ * @param dataHora Ponteiro data hora atual do sistema
+ * @param status Ponteiro de status atual do sistema.
+ * @param statusManual Ponteiro de status desejado do sistema, para ativação de mecanismo manualmente.
+ */
+void validarLuzEspectro(struct ts *dataHora, uint16_t *status, uint16_t *statusManual) {
+    if (validarStatus(statusManual, STS_ESPECTRO)) {
+        atualizarStatus(status, STS_ESPECTRO);
+    }
+    else {
+        struct programacao programacaoEspectro;
+        obterprogramacao(&programacaoEspectro, PROG_ESPECTRO);
+        atualizarStatus(status, programacaoEspectro.validar(dataHora, true) * STS_ESPECTRO);
+    }
+}
+
+/**
+ * Valida se deve iniciar o processo de luzes de acordo com a programação
+ * @param dataHora Ponteiro data hora atual do sistema
+ * @param status Ponteiro de status atual do sistema.
+ * @param statusManual Ponteiro de status desejado do sistema, para ativação de mecanismo manualmente.
+ */
+void validarLuz(struct ts *dataHora, uint16_t *status, uint16_t *statusManual) {
+
+    validarLuzNatural(dataHora, status, statusManual);
+    validarLuzEspectro(dataHora, status, statusManual);
 
     digitalWrite(pinoLampada, !validarStatus(status, STS_ILUMINACAO));
     digitalWrite(pinoLampadaEspectro, !validarStatus(status, STS_ESPECTRO));

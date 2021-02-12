@@ -70,12 +70,12 @@ void validarLuzEspectro(struct ts *dataHora, uint16_t *status, uint16_t *statusM
 }
 
 /**
- * Valida se deve iniciar o processo de luzes de acordo com a programação
+ * Processa loop de luz, valida e liga/desliga de acordo com status manual, programação ou botões.
  * @param dataHora Ponteiro data hora atual do sistema
  * @param status Ponteiro de status atual do sistema.
  * @param statusManual Ponteiro de status desejado do sistema, para ativação de mecanismo manualmente.
  */
-void validarLuz(struct ts *dataHora, uint16_t *status, uint16_t *statusManual) {
+void loopLuz(struct ts *dataHora, uint16_t *status, uint16_t *statusManual) {
 
     validarLuzNatural(dataHora, status, statusManual);
     validarLuzEspectro(dataHora, status, statusManual);

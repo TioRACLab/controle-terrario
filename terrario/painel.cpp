@@ -55,6 +55,7 @@ void mostrarDatahora(struct ts *dataHora) {
 
 /**
  * Mostra mensagem do status na segunda linha do LCD
+ * @param status Status atual do terrário para mostrar a mensagem ideal
  */
 void mostrarMensagem(uint16_t *status) {
     lcd.setCursor(0,1);
@@ -63,10 +64,16 @@ void mostrarMensagem(uint16_t *status) {
         lcd.print("Reserva Baixa   ");
     }
     else if (validarStatus(status, STS_BOMBA_RESERVATORIO)) {
-        lcd.print("Repondo Lago    ");
+        lcd.print("  Repondo Lago  ");
+    }
+    else if (validarStatus(status, STS_ILUMINACAO)) {
+        lcd.print("    BOM DIA!    ");
+    }
+    else if (validarStatus(status, STS_ESPECTRO)) {
+        lcd.print("    PENUMBRA    ");
     }
     else {
-        lcd.print("    BOM DIA!    ");
+        lcd.print("   BOA NOITE!   ");
     }
 
     /*if (validarStatus(status, STS_ILUMINACAO)) {

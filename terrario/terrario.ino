@@ -58,8 +58,8 @@ void loop() {
 
     obterDataHora(&dataHora);
     
-    validarLuz(&dataHora, &status, &statusManual);
-    processarHidraulica(&dataHora, &status);
+    loopLuz(&dataHora, &status, &statusManual);
+    loopHidraulica(&dataHora, &status, &statusManual);
     //processarTrem(&dataHora, &prog);*/
     //TODO: Atmosfera
 

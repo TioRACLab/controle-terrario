@@ -87,16 +87,23 @@ bool programacao::validar(struct ts *dataHora, bool tempoMinutos) {
 void obterprogramacao(struct programacao *programacao, uint8_t posicao) {
     if (posicao == PROG_ILUMINACAO) {
         programacao->tipo = 1;
-        programacao->valor1 = 8;
+        programacao->valor1 = 9;
         programacao->valor2 = 0;
-        programacao->valor3 = 18;
-        programacao->valor4 = 0;
+        programacao->valor3 = 17;
+        programacao->valor4 = 30;
     }
     else if (posicao == PROG_ESPECTRO) {
         programacao->tipo = 1;
-        programacao->valor1 = 8;
+        programacao->valor1 = 7;
         programacao->valor2 = 0;
-        programacao->valor3 = 18;
+        programacao->valor3 = 19;
+        programacao->valor4 = 0;
+    }
+    else if (posicao == PROG_CASCATA) {
+        programacao->tipo = 1;
+        programacao->valor1 = 10;
+        programacao->valor2 = 0;
+        programacao->valor3 = 22;
         programacao->valor4 = 0;
     }
 }

@@ -39,7 +39,7 @@ void desativarHidraulica() {
 }
 
 /**
- * Inicializa todas as pinagens hidráulica 
+ * Inicializa todo sistema de hidráulica 
  */
 void initHidraulica() {
     pinMode(pinoBombaPrincipal, OUTPUT);
@@ -55,7 +55,7 @@ void initHidraulica() {
  */
 void obterNivelLago(uint16_t *status) {
     int valor = analogRead(pinoSensorLago);
-    Serial.print("Valor: ");
+    Serial.print("Lago: ");
     Serial.println(valor);
 
     if (valor >= NivelLagoAlto) {
@@ -208,10 +208,12 @@ void verificarCachoeira(uint16_t *status) {
 }
 
 /**
- * Verifica o programacaomento da irrigação e da cachoeira.
- * 0 = Tudo desativado, 1 = Irrigacao, 2 = Cachoeira, 3 = Repondo água, -1 = Lago em baixo nível, -2 = Reservatório baixo nível
+ * Processa loop de hidráulica, cerifica o programação da irrigação e da cachoeira, nível do lago e do reservatório.
+ * @param dataHora Ponteiro data hora atual do sistema
+ * @param status Ponteiro de status atual do sistema.
+ * @param statusManual Ponteiro de status desejado do sistema, para ativação de mecanismo manualmente.
  */
-void processarHidraulica(struct ts *dataHora, uint16_t *status) {
+void loopHidraulica(struct ts *dataHora, uint16_t *status, uint16_t *statusManual) {
     obterNivelLago(status);
 
     if (obterNivelReservatorio(status)) {

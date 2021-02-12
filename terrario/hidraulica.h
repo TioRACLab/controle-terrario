@@ -29,23 +29,26 @@
 #define pinoReservatorio 36
 
 //Pinagens Sensores Hidráulicos
-#define pinoSensorLago 21 //A7
-#define pinoSensorReservatorio 20 //A6
+#define pinoSensorLago 61 //A7
+#define pinoSensorReservatorio 60 //A6
 
 #endif
 
 
-#define NivelLagoAlto 370   //Valor mínimo para identificar o lago como nível alto.
-#define NivelLagoMedio 250  //Valor mínimo para identificar o lago como nível médio.
-#define NivelLagoBaixo 100  //Valor mínimo para identificar o lago como nível baixo.
+#define NivelLagoAlto 370       //Valor mínimo para identificar o lago como nível alto.
+#define NivelLagoMedio 250      //Valor mínimo para identificar o lago como nível médio.
+#define NivelLagoBaixo 100      //Valor mínimo para identificar o lago como nível baixo.
 #define NivelReservatorio 950
 
 /**
- * Inicializa todas as pinagens hidráulica 
+ * Inicializa todo sistema de hidráulica 
  */
 void initHidraulica();
 
 /**
- * Verifica o programacaomento da irrigação e da cachoeira.
+ * Processa loop de hidráulica, cerifica o programação da irrigação e da cachoeira, nível do lago e do reservatório.
+ * @param dataHora Ponteiro data hora atual do sistema
+ * @param status Ponteiro de status atual do sistema.
+ * @param statusManual Ponteiro de status desejado do sistema, para ativação de mecanismo manualmente.
  */
-void processarHidraulica(struct ts *dataHora, uint16_t *status);
+void loopHidraulica(struct ts *dataHora, uint16_t *status, uint16_t *statusManual);

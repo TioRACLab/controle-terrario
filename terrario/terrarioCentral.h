@@ -21,7 +21,7 @@
 #define STS_RESERVATORIO 16         //Nível do reservatório baixo.
 #define STS_BOMBA_LAGO 32           //Bomba do lago ligada.
 #define STS_BOMBA_RESERVATORIO 64   //Bomba do reservatório ligada.
-#define STS_CACHOEIRA 128           //Válvula da cachoeira ligada.
+#define STS_CASCATA 128             //Válvula da cachoeira ligada.
 #define STS_IRRIGACAO 256           //Válvula da irrigação ligada.
 #define STS_NEBLINA 512             //Os nebolizadores estão ligados.
 #define STS_ARCOIRIS 1024           //O arco íris está ligado.

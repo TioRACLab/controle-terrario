@@ -26,6 +26,7 @@ void initPainel() {
 
 /**
  * Mostra data e hora atual na primeira linha do LCD
+ * @param dataHora Data hora atual para mostrar na primeira linha do monitor LCD
  */
 void mostrarDatahora(struct ts *dataHora) {
     lcd.setCursor(0,0);
@@ -55,16 +56,19 @@ void mostrarDatahora(struct ts *dataHora) {
 
 /**
  * Mostra mensagem do status na segunda linha do LCD
- * @param status Status atual do terrário para mostrar a mensagem ideal
+ * @param status Status atual do terrário para mostrar a mensagem ideal na segunda linha
  */
 void mostrarMensagem(uint16_t *status) {
     lcd.setCursor(0,1);
     
     if (validarStatus(status, STS_RESERVATORIO)) {
-        lcd.print("Reserva Baixa   ");
+        lcd.print(" Reserva Baixa! ");
     }
     else if (validarStatus(status, STS_BOMBA_RESERVATORIO)) {
         lcd.print("  Repondo Lago  ");
+    }
+    else if (validarStatus(status, STS_IRRIGACAO)) {
+        lcd.print("  Irrigando...  ");
     }
     else if (validarStatus(status, STS_ILUMINACAO)) {
         lcd.print("    BOM DIA!    ");
@@ -74,24 +78,7 @@ void mostrarMensagem(uint16_t *status) {
     }
     else {
         lcd.print("   BOA NOITE!   ");
-    }
-
-    /*if (validarStatus(status, STS_ILUMINACAO)) {
-        lcd.print("Luz: Ligada     ");
-    }
-    else {
-        lcd.print("Luz: Apagada    ");
-    }*/
-
-    /*if (validarStatus(status, STS_LAGO_ALTO)) {
-        lcd.print("Lago: N. Alto   ");
-    }
-    
-    else {
-        lcd.print("Lago: N. Baixo  ");
-    }*/
-
-    
+    }    
 }
 
 /**

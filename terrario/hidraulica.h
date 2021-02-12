@@ -12,7 +12,7 @@
 
 //Reles Hidráulicos
 #define pinoBombaPrincipal 7
-#define pinoCachoeira 6
+#define pinoCascata 6
 #define pinoIrrigacao 5
 #define pinoReservatorio 4
 
@@ -24,7 +24,7 @@
 
 //Reles Hidráulicos
 #define pinoBombaPrincipal 33
-#define pinoCachoeira 34
+#define pinoCascata 34
 #define pinoIrrigacao 35
 #define pinoReservatorio 36
 

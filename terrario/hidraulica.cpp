@@ -26,7 +26,7 @@ uint8_t statusLago = 0;
  */
 void desativarLagoIrrigacao() {
     digitalWrite(pinoBombaPrincipal, HIGH);
-    digitalWrite(pinoCachoeira, HIGH);
+    digitalWrite(pinoCascata, HIGH);
     digitalWrite(pinoIrrigacao, HIGH);
 }
 
@@ -43,7 +43,7 @@ void desativarHidraulica() {
  */
 void initHidraulica() {
     pinMode(pinoBombaPrincipal, OUTPUT);
-    pinMode(pinoCachoeira, OUTPUT);
+    pinMode(pinoCascata, OUTPUT);
     pinMode(pinoIrrigacao, OUTPUT);
     pinMode(pinoReservatorio, OUTPUT);
 
@@ -175,7 +175,7 @@ void verificarReposicaoAgua(uint16_t *status) {
  */
 void verificarIrrigacao(struct ts *dataHora, uint16_t *status) {
     /*if (obterNivelAgua() >= 1) {
-        digitalWrite(pinoCachoeira, HIGH);
+        digitalWrite(pinoCascata, HIGH);
         digitalWrite(pinoIrrigacao, LOW);
         digitalWrite(pinoBombaPrincipal, LOW);
     }
@@ -186,25 +186,21 @@ void verificarIrrigacao(struct ts *dataHora, uint16_t *status) {
 
 /**
  * Ativa a cachoeira, se no nível da água no lago for considerado vazio, desativa tudo.
+ * 
+ * @param status Ponteiro de status atual do sistema.
+ * @param statusManual Ponteiro de status desejado do sistema, para ativação de mecanismo manualmente.
  */
-void verificarCachoeira(uint16_t *status) { 
-    digitalWrite(pinoCachoeira, LOW);
-    digitalWrite(pinoBombaPrincipal, LOW);
-
-    /*if (validarStatus(status, STS_LAGO_NIVEL1) || validarStatus(status, STS_LAGO_NIVEL2)) {
-        digitalWrite(pinoCachoeira, LOW);
-        digitalWrite(pinoBombaPrincipal, LOW);
-        
-        atualizarStatus(status, STS_BOMBA_LAGO);
-        atualizarStatus(status, STS_CACHOEIRA);
-    }
-    else {
-        if (!validarStatus(status, STS_IRRIGACAO)) {
-            digitalWrite(pinoBombaPrincipal, HIGH);    
+void verificarCascata(struct ts *dataHora, uint16_t *status, uint16_t *statusManual) {
+    if (validarStatus(status, STS_LAGO_NIVEL1) || validarStatus(status, STS_LAGO_NIVEL2)) {
+        if (validarStatus(statusManual, STS_CASCATA)) {
+            atualizarStatus(status, STS_CASCATA);
         }
-        
-        digitalWrite(pinoCachoeira, HIGH);
-    }*/
+        else {
+            struct programacao programacao;
+            obterprogramacao(&programacao, PROG_CASCATA);
+            atualizarStatus(status, programacao.validar(dataHora, true) * STS_CASCATA);
+        }
+    }
 }
 
 /**
@@ -218,8 +214,21 @@ void loopHidraulica(struct ts *dataHora, uint16_t *status, uint16_t *statusManua
 
     if (obterNivelReservatorio(status)) {
         verificarReposicaoAgua(status);
+        verificarCascata(dataHora, status, statusManual);
         //verificarIrrigacao(dataHora, status);
-        verificarCachoeira(status);
+
+        if (validarStatus(status, STS_CASCATA) || validarStatus(status, STS_IRRIGACAO)) {
+            if (validarStatus(status, STS_CASCATA))
+                digitalWrite(pinoCascata, LOW);
+            
+            if (validarStatus(status, STS_IRRIGACAO))
+                digitalWrite(pinoIrrigacao, LOW);
+
+            digitalWrite(pinoBombaPrincipal, LOW);
+        }
+        else {
+            desativarLagoIrrigacao();
+        }
     }
     else {
         desativarHidraulica();

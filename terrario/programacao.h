@@ -11,6 +11,7 @@
 #define PROG_ILUMINACAO 0
 #define PROG_ESPECTRO 1
 #define PROG_CASCATA 2
+#define PROG_IRRIGACAO 3
 
 /**
  * Informações de programacao automatizada

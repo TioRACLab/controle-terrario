@@ -108,9 +108,9 @@ void obterprogramacao(struct programacao *programacao, uint8_t posicao) {
     }
     else if (posicao == PROG_IRRIGACAO) {
         programacao->tipo = 2;
-        programacao->valor1 = 7;
-        programacao->valor2 = 13;
-        programacao->valor3 = 30;
+        programacao->valor1 = 3;
+        programacao->valor2 = 15;
+        programacao->valor3 = 00;
         programacao->valor4 = 60;
     }
 }

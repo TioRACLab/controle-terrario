@@ -6,7 +6,6 @@
 * TioRACLAb
 */
 
-#include <Arduino.h>
 #include "hidraulica.h"
 #include "terrarioCentral.h"
 #include "programacao.h"
@@ -55,8 +54,6 @@ void initHidraulica() {
  */
 void obterNivelLago(uint16_t *status) {
     int valor = analogRead(pinoSensorLago);
-    Serial.print("Lago: ");
-    Serial.println(valor);
 
     if (valor >= NivelLagoAlto) {
         contagemVazio = 0;
@@ -171,39 +168,6 @@ void verificarReposicaoAgua(uint16_t *status) {
 }
 
 /**
- * Ativa a irrigação, se não houver água no lago, desativa tudo.
- */
-void verificarIrrigacao(struct ts *dataHora, uint16_t *status) {
-    /*if (obterNivelAgua() >= 1) {
-        digitalWrite(pinoCascata, HIGH);
-        digitalWrite(pinoIrrigacao, LOW);
-        digitalWrite(pinoBombaPrincipal, LOW);
-    }
-    else {
-        desativarBombaPrincipal();
-    }*/
-}
-
-/**
- * Ativa a cachoeira, se no nível da água no lago for considerado vazio, desativa tudo.
- * 
- * @param status Ponteiro de status atual do sistema.
- * @param statusManual Ponteiro de status desejado do sistema, para ativação de mecanismo manualmente.
- */
-void verificarCascata(struct ts *dataHora, uint16_t *status, uint16_t *statusManual) {
-    if (validarStatus(status, STS_LAGO_NIVEL1) || validarStatus(status, STS_LAGO_NIVEL2)) {
-        if (validarStatus(statusManual, STS_CASCATA)) {
-            atualizarStatus(status, STS_CASCATA);
-        }
-        else {
-            struct programacao programacao;
-            obterprogramacao(&programacao, PROG_CASCATA);
-            atualizarStatus(status, programacao.validar(dataHora, true) * STS_CASCATA);
-        }
-    }
-}
-
-/**
  * Processa loop de hidráulica, cerifica o programação da irrigação e da cachoeira, nível do lago e do reservatório.
  * @param dataHora Ponteiro data hora atual do sistema
  * @param status Ponteiro de status atual do sistema.
@@ -214,15 +178,22 @@ void loopHidraulica(struct ts *dataHora, uint16_t *status, uint16_t *statusManua
 
     if (obterNivelReservatorio(status)) {
         verificarReposicaoAgua(status);
-        verificarCascata(dataHora, status, statusManual);
-        //verificarIrrigacao(dataHora, status);
+
+        if (validarStatus(status, STS_LAGO_NIVEL1) || validarStatus(status, STS_LAGO_NIVEL2)) {
+            validarProgramacaoStatus(dataHora, status, statusManual, STS_CASCATA, PROG_CASCATA, false);
+            validarProgramacaoStatus(dataHora, status, statusManual, STS_IRRIGACAO, PROG_IRRIGACAO, false);
+        }
 
         if (validarStatus(status, STS_CASCATA) || validarStatus(status, STS_IRRIGACAO)) {
             if (validarStatus(status, STS_CASCATA))
                 digitalWrite(pinoCascata, LOW);
+            else
+                digitalWrite(pinoCascata, HIGH);
             
             if (validarStatus(status, STS_IRRIGACAO))
                 digitalWrite(pinoIrrigacao, LOW);
+            else
+                digitalWrite(pinoIrrigacao, HIGH);
 
             digitalWrite(pinoBombaPrincipal, LOW);
         }

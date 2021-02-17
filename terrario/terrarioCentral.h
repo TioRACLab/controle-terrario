@@ -6,6 +6,9 @@
 * TioRACLAb
 */
 
+#include <Arduino.h>
+
+
 //Define o tipo de board.
 //#define UNO     //Board Arduino Uno/Nano
 #define MEGA    //Board Arduino Mega
@@ -40,3 +43,13 @@ bool validarStatus(uint16_t *status, uint16_t valor);
  * Atualiza o valor do status adicionando um novo valor
  */
 void atualizarStatus(uint16_t *status, uint16_t valor);
+
+/**
+ * Verifica a promação de um estados e retorna se ele está ativo
+ * @param dataHora Ponteiro data hora atual do sistema
+ * @param status Ponteiro de status atual do sistema.
+ * @param statusManual Ponteiro de status desejado do sistema, para ativação de mecanismo manualmente.
+ * @param statusValidar Estado a ser verificado se deve está ativado ou não.
+ * @param programacao Número da programação do estado.
+ */
+void validarProgramacaoStatus(struct ts *dataHora, uint16_t *status, uint16_t *statusManual, uint16_t statusValidar, uint8_t programacao, bool tempoMinutos);

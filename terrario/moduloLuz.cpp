@@ -31,7 +31,7 @@ void initLuz() {
  * @param status Ponteiro de status atual do sistema.
  * @param statusManual Ponteiro de status desejado do sistema, para ativação de mecanismo manualmente.
  */
-void validarLuzNatural(struct ts *dataHora, uint16_t *status, uint16_t *statusManual) {
+/*void validarLuzNatural(struct ts *dataHora, uint16_t *status, uint16_t *statusManual) {
     if (validarStatus(statusManual, STS_ILUMINACAO)) {
         atualizarStatus(status, STS_ILUMINACAO);
     }
@@ -47,27 +47,9 @@ void validarLuzNatural(struct ts *dataHora, uint16_t *status, uint16_t *statusMa
 
             atualizarStatus(status, programacaoLuz.validar(dataHora, true) * STS_ILUMINACAO);
         }
-    }
+    }    
+}*/
 
-    
-}
-
-/**
- * Valida se deve ligar ou não a luz espectro.
- * @param dataHora Ponteiro data hora atual do sistema
- * @param status Ponteiro de status atual do sistema.
- * @param statusManual Ponteiro de status desejado do sistema, para ativação de mecanismo manualmente.
- */
-void validarLuzEspectro(struct ts *dataHora, uint16_t *status, uint16_t *statusManual) {
-    if (validarStatus(statusManual, STS_ESPECTRO)) {
-        atualizarStatus(status, STS_ESPECTRO);
-    }
-    else {
-        struct programacao programacaoEspectro;
-        obterprogramacao(&programacaoEspectro, PROG_ESPECTRO);
-        atualizarStatus(status, programacaoEspectro.validar(dataHora, true) * STS_ESPECTRO);
-    }
-}
 
 /**
  * Processa loop de luz, valida e liga/desliga de acordo com status manual, programação ou botões.
@@ -77,8 +59,9 @@ void validarLuzEspectro(struct ts *dataHora, uint16_t *status, uint16_t *statusM
  */
 void loopLuz(struct ts *dataHora, uint16_t *status, uint16_t *statusManual) {
 
-    validarLuzNatural(dataHora, status, statusManual);
-    validarLuzEspectro(dataHora, status, statusManual);
+    //validarLuzNatural(dataHora, status, statusManual);
+    validarProgramacaoStatus(dataHora, status, statusManual, STS_ILUMINACAO, PROG_ILUMINACAO, false);
+    validarProgramacaoStatus(dataHora, status, statusManual, STS_ESPECTRO, PROG_ESPECTRO, false);
 
     digitalWrite(pinoLampada, !validarStatus(status, STS_ILUMINACAO));
     digitalWrite(pinoLampadaEspectro, !validarStatus(status, STS_ESPECTRO));

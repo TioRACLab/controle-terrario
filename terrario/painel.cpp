@@ -13,8 +13,10 @@
 
 #include "painel.h"
 #include "terrarioCentral.h"
+#include "configurador.h"
 
 LiquidCrystal_I2C lcd(0x27, 20, 4);
+ConfiguradorApp configApp(&lcd);
 
 /**
  * Inicializa o painel LCD

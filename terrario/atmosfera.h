@@ -10,24 +10,24 @@
 
 #ifdef UNO
 
-#define pinoNeblina 3
-#define pinoArcoIris 2
+#define pinoNeblina110v 3
+#define pinoNeblina12v 2
 
 #elif defined(MEGA)
 
-#define pinoNeblina 37
-#define pinoArcoIris 38
+#define pinoNeblina110v 37
+#define pinoNeblina12v 38
 
 #endif
 
+/**
+ * Inicializa o módulo de Atmosfesra.
+ */
 void initAtmosfesra();
 
-void habilitarNeblina();
-
-void habilitarArcoIris();
-
-void desabilitarAtmosfera();
-
-void prepararTesteAtmosfera();
-
-void rodarTesteAtmosfera();
+/** Processa o loop da atmosfesra, ligando ou desligando itens
+ * @param dataHora Ponteiro data hora atual do sistema
+ * @param status Ponteiro de status atual do sistema.
+ * @param statusManual Ponteiro de status desejado do sistema, para ativação de mecanismo manualmente.
+ */
+void loopAtmosfera(struct ts *dataHora, uint16_t *status, uint16_t *statusManual);

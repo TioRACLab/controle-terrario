@@ -12,6 +12,7 @@
 #define PROG_ESPECTRO 1
 #define PROG_CASCATA 2
 #define PROG_IRRIGACAO 3
+#define PROG_NEBLINA 4
 
 /**
  * Informações de programacao automatizada

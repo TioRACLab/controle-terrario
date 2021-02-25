@@ -13,10 +13,39 @@
 
 #include "painel.h"
 #include "terrarioCentral.h"
-#include "configurador.h"
 
 LiquidCrystal_I2C lcd(0x27, 20, 4);
-ConfiguradorApp configApp(&lcd);
+painel processo = &mostarPainelIdle;
+
+String titulo = String("");
+String opcoes[10] = {};
+uint8_t qtdOpcoes = -1;
+uint8_t opcaoAtual = -1;
+
+uint8_t statusBotoes = 0;
+uint8_t botaoAtual = 0;
+
+void escreverLinhaLCD(String str, bool voltar = false, bool avancar = false) {
+    int start = (16 - str.length()) / 2;
+    int end = str.length() + start;
+    String text = String("");
+
+    for (uint16_t i = 0; i < 16; i++)
+    {
+        if (i == 0 && voltar) 
+            text += "<";
+        else if (i == 15 && avancar)
+            text += ">";
+        else if (i < start || i >= end)
+            text += " ";
+        else
+            text += str[i - start];
+    }
+
+    lcd.print(text);
+}
+
+void mostrarPainelOpcoes(struct ts *dataHora, uint16_t *status, uint16_t *statusManual);
 
 /**
  * Inicializa o painel LCD
@@ -24,6 +53,12 @@ ConfiguradorApp configApp(&lcd);
 void initPainel() {
     lcd.init();
     lcd.backlight();
+
+    /*titulo = String("Titulo");
+    qtdOpcoes = 0;
+    opcaoAtual = 0;
+    opcoes[opcaoAtual] = String("Gatinha!");
+    processo = &mostrarPainelOpcoes;*/
 }
 
 /**
@@ -84,9 +119,40 @@ void mostrarMensagem(uint16_t *status) {
 }
 
 /**
- * Atualiza informações mostradas no painel LCD
+ * Mostra data e hora no painel
  */
-void mostrarPainel(struct ts *dataHora, uint16_t *status) {
+void mostarPainelIdle(struct ts *dataHora, uint16_t *status, uint16_t *statusManual) {
     mostrarDatahora(dataHora);
     mostrarMensagem(status);
+}
+
+void mostrarPainelOpcoes(struct ts *dataHora, uint16_t *status, uint16_t *statusManual) {
+    lcd.setCursor(0,0);
+
+    uint8_t diff = 16 - titulo.length();
+
+    escreverLinhaLCD(titulo);
+    lcd.setCursor(0,1);
+    escreverLinhaLCD(opcoes[opcaoAtual], true, true);
+}
+
+void validarBotao(uint8_t pino, uint8_t status) {
+    bool statusAtual = (statusBotoes & status) == status;
+
+    if (digitalRead(pino)) {
+        if (!statusAtual) {
+            statusBotoes = statusBotoes | status;
+            botaoAtual = status;
+        }
+    }
+    else if (statusAtual) {
+        statusBotoes = statusBotoes ^ status;
+    }
+}
+
+/**
+ * Atualiza informações mostradas no painel LCD
+ */
+void loopPainel(struct ts *dataHora, uint16_t *status, uint16_t *statusManual) {
+    processo(dataHora, status, statusManual);
 }

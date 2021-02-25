@@ -66,7 +66,7 @@ void loop() {
     //int valor = analogRead(pinoSensorLago);
 
 
-    mostrarPainel(&dataHora, &status);
+    loopPainel(&dataHora, &status, &statusManual);
 
     Serial.print("Status: ");
     Serial.println(status);

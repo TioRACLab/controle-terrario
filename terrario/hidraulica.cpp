@@ -52,7 +52,7 @@ void initHidraulica() {
 /**
  * Obtem nível da água do lago.
  */
-void obterNivelLago(uint16_t *status) {
+void obterNivelLago(status *statusAtual) {
     int valor = analogRead(pinoSensorLago);
 
     if (valor >= NivelLagoAlto) {
@@ -86,7 +86,6 @@ void obterNivelLago(uint16_t *status) {
         if (contagemBaixo > 3) {
             contagemBaixo = 0;
             statusLago = 1;
-            atualizarStatus(status, STS_LAGO_NIVEL2);
         }
     }
     else {
@@ -104,16 +103,16 @@ void obterNivelLago(uint16_t *status) {
     switch (statusLago)
     {
         case 3:
-            atualizarStatus(status, STS_LAGO_NIVEL1);
-            atualizarStatus(status, STS_LAGO_NIVEL2);
+            atualizarStatus(statusAtual, STS_LAGO_NIVEL1);
+            atualizarStatus(statusAtual, STS_LAGO_NIVEL2);
             break;
 
         case 2:
-            atualizarStatus(status, STS_LAGO_NIVEL1);
+            atualizarStatus(statusAtual, STS_LAGO_NIVEL1);
             break;
 
         case 1:
-            atualizarStatus(status, STS_LAGO_NIVEL2);
+            atualizarStatus(statusAtual, STS_LAGO_NIVEL2);
             break;
     
         default:
@@ -124,14 +123,14 @@ void obterNivelLago(uint16_t *status) {
 /**
  * Obtem nível da água do reservatório. True bom, False baixo
  */
-bool obterNivelReservatorio(uint16_t *status) {
+bool obterNivelReservatorio(status *statusAtual) {
     
     if (analogRead(pinoSensorReservatorio) > NivelReservatorio) {
         reservaBaixa++;
 
         if (reservaBaixa >= 5) {
             reservaBaixa = 5;
-            atualizarStatus(status, STS_RESERVATORIO);
+            atualizarStatus(statusAtual, STS_RESERVATORIO);
             return false;
         }
     }
@@ -146,23 +145,23 @@ bool obterNivelReservatorio(uint16_t *status) {
  * Ativa reposição quando o nível médio não é lido no sensor.
  * Desativa a reposição quando o nível alto é lido no sensor.
  */
-void verificarReposicaoAgua(uint16_t *status) {
-    if (validarStatus(status, STS_LAGO_NIVEL1) && validarStatus(status, STS_LAGO_NIVEL2)) {
+void verificarReposicaoAgua(status *statusAtual) {
+    if (validarStatus(statusAtual, STS_LAGO_NIVEL1) && validarStatus(statusAtual, STS_LAGO_NIVEL2)) {
         repondoLago = false;
         digitalWrite(pinoReservatorio, HIGH);
     }
     else {
         if (repondoLago) {
             digitalWrite(pinoReservatorio, LOW);
-            atualizarStatus(status, STS_BOMBA_RESERVATORIO);
+            atualizarStatus(statusAtual, STS_BOMBA_RESERVATORIO);
         }
-        else if (validarStatus(status, STS_LAGO_NIVEL1)) {
+        else if (validarStatus(statusAtual, STS_LAGO_NIVEL1)) {
             digitalWrite(pinoReservatorio, HIGH);
         }
         else {
             repondoLago = true;
             digitalWrite(pinoReservatorio, LOW);
-            atualizarStatus(status, STS_BOMBA_RESERVATORIO);
+            atualizarStatus(statusAtual, STS_BOMBA_RESERVATORIO);
         }
     }
 }
@@ -173,24 +172,24 @@ void verificarReposicaoAgua(uint16_t *status) {
  * @param status Ponteiro de status atual do sistema.
  * @param statusManual Ponteiro de status desejado do sistema, para ativação de mecanismo manualmente.
  */
-void loopHidraulica(struct ts *dataHora, uint16_t *status, uint16_t *statusManual) {
-    obterNivelLago(status);
+void loopHidraulica(struct ts *dataHora, status *statusAtual, status *statusManual) {
+    obterNivelLago(statusAtual);
 
-    if (obterNivelReservatorio(status)) {
-        verificarReposicaoAgua(status);
+    if (obterNivelReservatorio(statusAtual)) {
+        verificarReposicaoAgua(statusAtual);
 
-        if (validarStatus(status, STS_LAGO_NIVEL1) || validarStatus(status, STS_LAGO_NIVEL2)) {
-            validarProgramacaoStatus(dataHora, status, statusManual, STS_CASCATA, PROG_CASCATA, false);
-            validarProgramacaoStatus(dataHora, status, statusManual, STS_IRRIGACAO, PROG_IRRIGACAO, false);
+        if (validarStatus(statusAtual, STS_LAGO_NIVEL1) || validarStatus(statusAtual, STS_LAGO_NIVEL2)) {
+            validarProgramacaoStatus(dataHora, statusAtual, statusManual, STS_CASCATA, PROG_CASCATA, false);
+            validarProgramacaoStatus(dataHora, statusAtual, statusManual, STS_IRRIGACAO, PROG_IRRIGACAO, false);
         }
 
-        if (validarStatus(status, STS_CASCATA) || validarStatus(status, STS_IRRIGACAO)) {
-            if (validarStatus(status, STS_CASCATA))
+        if (validarStatus(statusAtual, STS_CASCATA) || validarStatus(statusAtual, STS_IRRIGACAO)) {
+            if (validarStatus(statusAtual, STS_CASCATA))
                 digitalWrite(pinoCascata, LOW);
             else
                 digitalWrite(pinoCascata, HIGH);
             
-            if (validarStatus(status, STS_IRRIGACAO))
+            if (validarStatus(statusAtual, STS_IRRIGACAO))
                 digitalWrite(pinoIrrigacao, LOW);
             else
                 digitalWrite(pinoIrrigacao, HIGH);

@@ -18,7 +18,7 @@
 #include "controleTrem.h"
 #include "atmosfera.h"
 
-uint16_t statusManual = STS_DESLIGADO;
+status statusManual = STS_DESLIGADO;
 
 /**
  * Inicializar sistema de terrário, configurações de pinagens
@@ -50,7 +50,7 @@ void setup() {
  * Looping principal da programação do terrário
  */
 void loop() {
-    uint16_t status = STS_DESLIGADO;
+    status statusAtual = STS_DESLIGADO;
     struct ts dataHora;
     
     //struct programacao progC;
@@ -58,16 +58,16 @@ void loop() {
 
     obterDataHora(&dataHora);
     
-    loopLuz(&dataHora, &status, &statusManual);
-    loopHidraulica(&dataHora, &status, &statusManual);
+    loopLuz(&dataHora, &statusAtual, &statusManual);
+    loopHidraulica(&dataHora, &statusAtual, &statusManual);
     //processarTrem(&dataHora, &prog);*/
     //TODO: Atmosfera
 
     //int valor = analogRead(pinoSensorLago);
 
 
-    loopPainel(&dataHora, &status, &statusManual);
+    loopPainel(&dataHora, &statusAtual, &statusManual);
 
     Serial.print("Status: ");
-    Serial.println(status);
+    Serial.println(statusAtual);
 }

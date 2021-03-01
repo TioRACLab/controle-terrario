@@ -29,11 +29,11 @@ void initAtmosfesra() {
  * @param status Ponteiro de status atual do sistema.
  * @param statusManual Ponteiro de status desejado do sistema, para ativação de mecanismo manualmente.
  */
-void loopAtmosfera(struct ts *dataHora, uint16_t *status, uint16_t *statusManual) {
+void loopAtmosfera(struct ts *dataHora, status *statusAtual, status *statusManual) {
 
-    validarProgramacaoStatus(dataHora, status, statusManual, STS_NEBLINA, PROG_NEBLINA, false);
+    validarProgramacaoStatus(dataHora, statusAtual, statusManual, STS_NEBLINA, PROG_NEBLINA, false);
 
-    if (validarStatus(status, STS_NEBLINA)) {
+    if (validarStatus(statusAtual, STS_NEBLINA)) {
         digitalWrite(pinoNeblina110v, LOW);
         digitalWrite(pinoNeblina12v, LOW);
     }

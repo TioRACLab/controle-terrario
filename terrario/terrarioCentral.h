@@ -8,7 +8,6 @@
 
 #include <Arduino.h>
 
-
 //Define o tipo de board.
 //#define UNO     //Board Arduino Uno/Nano
 #define MEGA    //Board Arduino Mega
@@ -34,15 +33,17 @@
 #define STS_TREM_MEDIO 16384        //Velocidade do trêm é mediana.
 #define STS_TREM_RAPIDO 32768       //Velocidade do trêm é rápido.
 
+typedef uint16_t status;
+
 /**
  * Valida se o status está valido
  */
-bool validarStatus(uint16_t *status, uint16_t valor);
+bool validarStatus(status *statusAtual, status valor);
 
 /**
  * Atualiza o valor do status adicionando um novo valor
  */
-void atualizarStatus(uint16_t *status, uint16_t valor);
+void atualizarStatus(status *statusAtual, status valor);
 
 /**
  * Verifica a promação de um estados e retorna se ele está ativo
@@ -52,4 +53,4 @@ void atualizarStatus(uint16_t *status, uint16_t valor);
  * @param statusValidar Estado a ser verificado se deve está ativado ou não.
  * @param programacao Número da programação do estado.
  */
-void validarProgramacaoStatus(struct ts *dataHora, uint16_t *status, uint16_t *statusManual, uint16_t statusValidar, uint8_t programacao, bool tempoMinutos);
+void validarProgramacaoStatus(struct ts *dataHora, status *statusAtual, status *statusManual, status statusValidar, uint8_t programacao, bool tempoMinutos);

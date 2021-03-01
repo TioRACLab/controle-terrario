@@ -51,4 +51,4 @@ void initHidraulica();
  * @param status Ponteiro de status atual do sistema.
  * @param statusManual Ponteiro de status desejado do sistema, para ativação de mecanismo manualmente.
  */
-void loopHidraulica(struct ts *dataHora, uint16_t *status, uint16_t *statusManual);
+void loopHidraulica(struct ts *dataHora, status *statusAtual, status *statusManual);

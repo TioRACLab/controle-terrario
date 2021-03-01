@@ -45,7 +45,7 @@ void escreverLinhaLCD(String str, bool voltar = false, bool avancar = false) {
     lcd.print(text);
 }
 
-void mostrarPainelOpcoes(struct ts *dataHora, uint16_t *status, uint16_t *statusManual);
+void mostrarPainelOpcoes(struct ts *dataHora, status *statusAtual, status *statusManual);
 
 /**
  * Inicializa o painel LCD
@@ -95,22 +95,22 @@ void mostrarDatahora(struct ts *dataHora) {
  * Mostra mensagem do status na segunda linha do LCD
  * @param status Status atual do terrário para mostrar a mensagem ideal na segunda linha
  */
-void mostrarMensagem(uint16_t *status) {
+void mostrarMensagem(status *statusAtual) {
     lcd.setCursor(0,1);
     
-    if (validarStatus(status, STS_RESERVATORIO)) {
+    if (validarStatus(statusAtual, STS_RESERVATORIO)) {
         lcd.print(" Reserva Baixa! ");
     }
-    else if (validarStatus(status, STS_BOMBA_RESERVATORIO)) {
+    else if (validarStatus(statusAtual, STS_BOMBA_RESERVATORIO)) {
         lcd.print("  Repondo Lago  ");
     }
-    else if (validarStatus(status, STS_IRRIGACAO)) {
+    else if (validarStatus(statusAtual, STS_IRRIGACAO)) {
         lcd.print("  Irrigando...  ");
     }
-    else if (validarStatus(status, STS_ILUMINACAO)) {
+    else if (validarStatus(statusAtual, STS_ILUMINACAO)) {
         lcd.print("    BOM DIA!    ");
     }
-    else if (validarStatus(status, STS_ESPECTRO)) {
+    else if (validarStatus(statusAtual, STS_ESPECTRO)) {
         lcd.print("    PENUMBRA    ");
     }
     else {
@@ -121,12 +121,12 @@ void mostrarMensagem(uint16_t *status) {
 /**
  * Mostra data e hora no painel
  */
-void mostarPainelIdle(struct ts *dataHora, uint16_t *status, uint16_t *statusManual) {
+void mostarPainelIdle(struct ts *dataHora, status *statusAtual, status *statusManual) {
     mostrarDatahora(dataHora);
-    mostrarMensagem(status);
+    mostrarMensagem(statusAtual);
 }
 
-void mostrarPainelOpcoes(struct ts *dataHora, uint16_t *status, uint16_t *statusManual) {
+void mostrarPainelOpcoes(struct ts *dataHora, status *statusAtual, status *statusManual) {
     lcd.setCursor(0,0);
 
     uint8_t diff = 16 - titulo.length();
@@ -136,23 +136,23 @@ void mostrarPainelOpcoes(struct ts *dataHora, uint16_t *status, uint16_t *status
     escreverLinhaLCD(opcoes[opcaoAtual], true, true);
 }
 
-void validarBotao(uint8_t pino, uint8_t status) {
-    bool statusAtual = (statusBotoes & status) == status;
+/*void validarBotao(uint8_t pino, uint8_t statusBotoes) {
+    bool statusAtual = (statusBotoes & statusAtual) == statusAtual;
 
     if (digitalRead(pino)) {
         if (!statusAtual) {
-            statusBotoes = statusBotoes | status;
-            botaoAtual = status;
+            statusBotoes = statusBotoes | statusAtual;
+            botaoAtual = statusAtual;
         }
     }
     else if (statusAtual) {
-        statusBotoes = statusBotoes ^ status;
+        statusBotoes = statusBotoes ^ statusAtual;
     }
-}
+}*/
 
 /**
  * Atualiza informações mostradas no painel LCD
  */
-void loopPainel(struct ts *dataHora, uint16_t *status, uint16_t *statusManual) {
-    processo(dataHora, status, statusManual);
+void loopPainel(struct ts *dataHora, status *statusAtual, status *statusManual) {
+    processo(dataHora, statusAtual, statusManual);
 }

@@ -57,12 +57,12 @@ void initLuz() {
  * @param status Ponteiro de status atual do sistema.
  * @param statusManual Ponteiro de status desejado do sistema, para ativação de mecanismo manualmente.
  */
-void loopLuz(struct ts *dataHora, uint16_t *status, uint16_t *statusManual) {
+void loopLuz(struct ts *dataHora, status *statusAtual, status *statusManual) {
 
     //validarLuzNatural(dataHora, status, statusManual);
-    validarProgramacaoStatus(dataHora, status, statusManual, STS_ILUMINACAO, PROG_ILUMINACAO, false);
-    validarProgramacaoStatus(dataHora, status, statusManual, STS_ESPECTRO, PROG_ESPECTRO, false);
+    validarProgramacaoStatus(dataHora, statusAtual, statusManual, STS_ILUMINACAO, PROG_ILUMINACAO, false);
+    validarProgramacaoStatus(dataHora, statusAtual, statusManual, STS_ESPECTRO, PROG_ESPECTRO, false);
 
-    digitalWrite(pinoLampada, !validarStatus(status, STS_ILUMINACAO));
-    digitalWrite(pinoLampadaEspectro, !validarStatus(status, STS_ESPECTRO));
+    digitalWrite(pinoLampada, !validarStatus(statusAtual, STS_ILUMINACAO));
+    digitalWrite(pinoLampadaEspectro, !validarStatus(statusAtual, STS_ESPECTRO));
 }

@@ -13,25 +13,25 @@
 /**
  * Valida se o status está valido
  */
-bool validarStatus(uint16_t *status, uint16_t valor) {
-    return (*status & valor) == valor;
+bool validarStatus(status *statusAtual, status valor) {
+    return (*statusAtual & valor) == valor;
 }
 
 /**
  * Atualiza o valor do status adicionando um novo valor
  */
-void atualizarStatus(uint16_t *status, uint16_t valor) {
-    *status = *status | valor;
+void atualizarStatus(status *statusAtual, status valor) {
+    *statusAtual = *statusAtual | valor;
 }
 
 
-void validarProgramacaoStatus(struct ts *dataHora, uint16_t *status, uint16_t *statusManual, uint16_t statusValidar, uint8_t programacaoId, bool tempoMinutos) {
+void validarProgramacaoStatus(struct ts *dataHora, status *statusAtual, status *statusManual, status statusValidar, uint8_t programacaoId, bool tempoMinutos) {
     if (validarStatus(statusManual, statusValidar)) {
-        atualizarStatus(status, statusValidar);
+        atualizarStatus(statusAtual, statusValidar);
     }
     else {
         struct programacao programacao;
         obterprogramacao(&programacao, programacaoId);
-        atualizarStatus(status, programacao.validar(dataHora, tempoMinutos) * statusValidar);
+        atualizarStatus(statusAtual, programacao.validar(dataHora, tempoMinutos) * statusValidar);
     }
 }

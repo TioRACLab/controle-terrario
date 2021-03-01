@@ -6,6 +6,8 @@
 * TioRACLAb
 */
 
+#include "terrarioCentral.h"
+
 #define STS_BOTAO_NULO 0
 #define STS_BOTAO_ENTER 1
 #define STS_BOTAO_ESQ 2
@@ -15,7 +17,7 @@
 #define pinoBotaoEsq 0
 #define pinoBotaoDir 0
 
-typedef void (*painel) (ts*, uint16_t*,  uint16_t*);
+typedef void (*painel) (ts*, status*,  status*);
 
 /**
  * Inicializa o painel LCD
@@ -25,9 +27,9 @@ void initPainel();
 /**
  * Atualiza informações mostradas no painel LCD
  */
-void loopPainel(struct ts *dataHora, uint16_t *status, uint16_t *statusManual);
+void loopPainel(struct ts *dataHora, status *statusAtual, status *statusManual);
 
 /**
  * Mostra data e hora no painel
  */
-void mostarPainelIdle(struct ts *dataHora, uint16_t *status, uint16_t *statusManual);
+void mostarPainelIdle(struct ts *dataHora, status *statusAtual, status *statusManual);

@@ -9,6 +9,9 @@
 #include <Arduino.h>
 #include "terrarioCentral.h"
 #include "atmosfera.h"
+
+#ifdef MD_ATMOSFERA
+
 #include "painel.h"
 #include "programacao.h"
 
@@ -42,3 +45,11 @@ void loopAtmosfera(struct ts *dataHora, status *statusAtual, status *statusManua
         digitalWrite(pinoNeblina12v, HIGH);
     }
 }
+
+#else
+
+void initAtmosfesra() { }
+
+void loopAtmosfera(struct ts *dataHora, status *statusAtual, status *statusManual) { }
+
+#endif

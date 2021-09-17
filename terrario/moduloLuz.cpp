@@ -13,6 +13,8 @@
 #include "moduloLuz.h"
 #include "painel.h"
 
+#ifdef MD_LUZ
+
 /**
  * Inicializa o módulo de luzes 
  */
@@ -66,3 +68,11 @@ void loopLuz(struct ts *dataHora, status *statusAtual, status *statusManual) {
     digitalWrite(pinoLampada, !validarStatus(statusAtual, STS_ILUMINACAO));
     digitalWrite(pinoLampadaEspectro, !validarStatus(statusAtual, STS_ESPECTRO));
 }
+
+#else
+
+void initLuz() { }
+
+void loopLuz(struct ts *dataHora, status *statusAtual, status *statusManual) { }
+
+#endif

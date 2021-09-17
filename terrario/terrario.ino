@@ -17,6 +17,8 @@
 #include "hidraulica.h"
 #include "controleTrem.h"
 #include "atmosfera.h"
+#include "sd.h"
+
 
 status statusManual = STS_DESLIGADO;
 
@@ -27,9 +29,9 @@ void setup() {
 
     initLuz();
     initHidraulica();
-    /*
+    initAtmosfesra();    
     initTrem();
-    initAtmosfesra();*/
+    
 
     Serial.begin(9600);
     Serial.println("Sistema do terrario está iniciando");
@@ -38,12 +40,16 @@ void setup() {
 
     initDataHora();
     //setarDataHora(2020, 10, 31, 14, 48, 00);
-
     initPainel();
 
     Serial.println("Terrario configurado");
 
     delay(3000); //Proteção de energia interrupta
+
+    initSD();
+    struct ts dataHora;
+    obterDataHora(&dataHora);
+    logar(&dataHora, STS_DESLIGADO, "Sistema Iniciado");
 }
 
 /**
@@ -52,22 +58,16 @@ void setup() {
 void loop() {
     status statusAtual = STS_DESLIGADO;
     struct ts dataHora;
-    
-    //struct programacao progC;
-    //progC.tipo = 3;
 
     obterDataHora(&dataHora);
     
     loopLuz(&dataHora, &statusAtual, &statusManual);
     loopHidraulica(&dataHora, &statusAtual, &statusManual);
-    //processarTrem(&dataHora, &prog);*/
-    //TODO: Atmosfera
-
-    //int valor = analogRead(pinoSensorLago);
-
-
+    loopAtmosfera(&dataHora, &statusAtual, &statusManual);
+    loopTrem(&dataHora, &statusAtual, &statusManual);
     loopPainel(&dataHora, &statusAtual, &statusManual);
+    loopSD(&dataHora, &statusAtual, &statusManual);
 
-    Serial.print("Status: ");
-    Serial.println(statusAtual);
+    //Serial.print("Status: ");
+    //Serial.println(statusAtual);
 }

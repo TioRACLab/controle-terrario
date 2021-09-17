@@ -17,8 +17,6 @@
 #define pinoBotaoEsq 0
 #define pinoBotaoDir 0
 
-typedef void (*painel) (ts*, status*,  status*);
-
 /**
  * Inicializa o painel LCD
  */
@@ -28,8 +26,3 @@ void initPainel();
  * Atualiza informações mostradas no painel LCD
  */
 void loopPainel(struct ts *dataHora, status *statusAtual, status *statusManual);
-
-/**
- * Mostra data e hora no painel
- */
-void mostarPainelIdle(struct ts *dataHora, status *statusAtual, status *statusManual);

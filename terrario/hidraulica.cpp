@@ -8,6 +8,9 @@
 
 #include "hidraulica.h"
 #include "terrarioCentral.h"
+
+#ifdef MD_HIDRAULICA
+
 #include "programacao.h"
 #include "painel.h"
 #include <ds3231.h>
@@ -204,3 +207,11 @@ void loopHidraulica(struct ts *dataHora, status *statusAtual, status *statusManu
         desativarHidraulica();
     }
 }
+
+#else
+
+void initHidraulica() { }
+
+void loopHidraulica(struct ts *dataHora, status *statusAtual, status *statusManual) { }
+
+#endif

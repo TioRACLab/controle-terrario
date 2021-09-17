@@ -14,15 +14,24 @@
 #define PROG_IRRIGACAO 3
 #define PROG_NEBLINA 4
 
+#define DOMINGO 1
+#define SEGUNDA 2
+#define TERCA 4
+#define QUARTA 8
+#define QUINTA 16
+#define SEXTA 32
+#define SABADO 64
+
+
 /**
  * Informações de programacao automatizada
  */
 struct programacao {
-    uint8_t tipo;       //0 = Manual, 1 = Diario, 2 = Semanal, 3 = Automatico
-    uint8_t valor1;     //Diario = Hora inicio, Semanal = Dia Semana
-    uint8_t valor2;     //Diario = Minuto inicio, Semana = Hora Inicio
-    uint8_t valor3;     //Diario = Hora Fim, Semanal = Minuto Inicio
-    uint8_t valor4;     //Diario = Minuto Fim, Semanal = Tempo (Depende do dispositivo)
+    uint8_t dias;           //Dias da semana da programação
+    uint8_t horaInicio;     //Hora início da programação
+    uint8_t minutoInicio;   //Minuto início da programação
+    uint8_t horaFim;        //Hora fim da programação
+    uint8_t minutoFim;      //Minuto fim da programação
 
     /**
      * Verifica se a data hora está dentro da programação.
@@ -34,7 +43,12 @@ struct programacao {
         /**
          * Obtem o tempo em unix a partir de uma estrutura de datetime
          */
-        uint32_t get_unixtime(struct ts *t);
+        //uint32_t get_unixtime(struct ts *t);
+
+        /**
+         * Valida se o dia atual é um dia da semana válido
+         */
+        bool validarDiaSemana(uint8_t diaSemana);
 };
 
 /**

@@ -7,15 +7,17 @@
 */
 
 #include <Arduino.h>
+#include "painel.h"
+#include "terrarioCentral.h"
+
+#ifdef MD_PAINEL
+
 #include <Wire.h>
 #include <ds3231.h>
 #include <LiquidCrystal_I2C.h>
 
-#include "painel.h"
-#include "terrarioCentral.h"
 
 LiquidCrystal_I2C lcd(0x27, 20, 4);
-painel processo = &mostarPainelIdle;
 
 String titulo = String("");
 String opcoes[10] = {};
@@ -25,27 +27,6 @@ uint8_t opcaoAtual = -1;
 uint8_t statusBotoes = 0;
 uint8_t botaoAtual = 0;
 
-void escreverLinhaLCD(String str, bool voltar = false, bool avancar = false) {
-    int start = (16 - str.length()) / 2;
-    int end = str.length() + start;
-    String text = String("");
-
-    for (uint16_t i = 0; i < 16; i++)
-    {
-        if (i == 0 && voltar) 
-            text += "<";
-        else if (i == 15 && avancar)
-            text += ">";
-        else if (i < start || i >= end)
-            text += " ";
-        else
-            text += str[i - start];
-    }
-
-    lcd.print(text);
-}
-
-void mostrarPainelOpcoes(struct ts *dataHora, status *statusAtual, status *statusManual);
 
 /**
  * Inicializa o painel LCD
@@ -53,12 +34,6 @@ void mostrarPainelOpcoes(struct ts *dataHora, status *statusAtual, status *statu
 void initPainel() {
     lcd.init();
     lcd.backlight();
-
-    /*titulo = String("Titulo");
-    qtdOpcoes = 0;
-    opcaoAtual = 0;
-    opcoes[opcaoAtual] = String("Gatinha!");
-    processo = &mostrarPainelOpcoes;*/
 }
 
 /**
@@ -118,41 +93,26 @@ void mostrarMensagem(status *statusAtual) {
     }    
 }
 
+
+void mostrarStatus(status *statusAtual) {
+    lcd.setCursor(0,1);
+    lcd.print("Status: ");
+    lcd.print(*statusAtual);
+}
+
 /**
  * Mostra data e hora no painel
  */
-void mostarPainelIdle(struct ts *dataHora, status *statusAtual, status *statusManual) {
-    mostrarDatahora(dataHora);
-    mostrarMensagem(statusAtual);
-}
-
-void mostrarPainelOpcoes(struct ts *dataHora, status *statusAtual, status *statusManual) {
-    lcd.setCursor(0,0);
-
-    uint8_t diff = 16 - titulo.length();
-
-    escreverLinhaLCD(titulo);
-    lcd.setCursor(0,1);
-    escreverLinhaLCD(opcoes[opcaoAtual], true, true);
-}
-
-/*void validarBotao(uint8_t pino, uint8_t statusBotoes) {
-    bool statusAtual = (statusBotoes & statusAtual) == statusAtual;
-
-    if (digitalRead(pino)) {
-        if (!statusAtual) {
-            statusBotoes = statusBotoes | statusAtual;
-            botaoAtual = statusAtual;
-        }
-    }
-    else if (statusAtual) {
-        statusBotoes = statusBotoes ^ statusAtual;
-    }
-}*/
-
-/**
- * Atualiza informações mostradas no painel LCD
- */
 void loopPainel(struct ts *dataHora, status *statusAtual, status *statusManual) {
-    processo(dataHora, statusAtual, statusManual);
+    mostrarDatahora(dataHora);
+    mostrarStatus(statusAtual);
+    //mostrarMensagem(statusAtual);
 }
+
+#else
+
+void initPainel() { }
+
+void loopPainel(struct ts *dataHora, status *statusAtual, status *statusManual) { }
+
+#endif

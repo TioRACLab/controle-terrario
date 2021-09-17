@@ -1,8 +1,19 @@
+/**
+* Header do módulo dp Trêm
+* 
+* Autor: Ricardo Augusto Coelho
+* Site: https://tioraclab.com
+* TioRACLAb
+*/
+
+#include "controleTrem.h"
+#include "terrarioCentral.h"
+
+
+#ifdef MD_TREM
+
 #include <ds3231.h>
 #include "programacao.h"
-#include "terrarioCentral.h"
-#include "controleTrem.h"
-#include "painel.h"
 
 
 void initTrem() {
@@ -30,11 +41,11 @@ void pararTrem() {
     analogWrite(pinoTremENA, 0);
 }
 
-int processarTrem(struct ts *dataHora, struct programacao *prog) {
-    if (prog->validar(dataHora, true)) {
-        movimentar(true, 255);
-    }
-    else if (prog->tipo != 0) {
-        pararTrem();
-    }
-}
+#else
+
+void initTrem() { }
+
+#endif
+
+int loopTrem(struct ts *dataHora, status *statusAtual, status *statusManual) { }
+

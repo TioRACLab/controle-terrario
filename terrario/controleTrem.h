@@ -27,12 +27,4 @@
 
 void initTrem();
 
-int processarTrem(struct ts *dataHora, struct programacao *prog);
-
-void movimentar(bool frente, int velocidade);
-
-void parar();
-
-void prepararTesteTrem();
-
-void rodarTesteTrem();
+int loopTrem(struct ts *dataHora, status *statusAtual, status *statusManual);

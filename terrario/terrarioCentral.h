@@ -13,6 +13,16 @@
 #define MEGA    //Board Arduino Mega
 
 
+//Define módulos
+#define MD_SD
+//#define MD_ATMOSFERA
+//#define MD_TREM
+#define MD_HIDRAULICA
+#define MD_LUZ
+#define MD_PAINEL
+
+
+
 //Status do Terrário
 
 #define STS_DESLIGADO 0             //Tudo desligado.
@@ -35,6 +45,7 @@
 
 typedef uint16_t status;
 
+
 /**
  * Valida se o status está valido
  */
@@ -54,3 +65,8 @@ void atualizarStatus(status *statusAtual, status valor);
  * @param programacao Número da programação do estado.
  */
 void validarProgramacaoStatus(struct ts *dataHora, status *statusAtual, status *statusManual, status statusValidar, uint8_t programacao, bool tempoMinutos);
+
+/**
+ * Obtem a configuração atual do sistema
+ */
+byte* obterConfiguracao();

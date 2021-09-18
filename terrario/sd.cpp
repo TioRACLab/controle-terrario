@@ -15,10 +15,25 @@
 #include <SPI.h>
 #include <SD.h>
 #include <ds3231.h>
+#include "configuracao.h"
 
 File logFile;
 bool sdOk = false;
 status ultimoStatus = 0;
+
+String obtemString(File configFile) {
+    String response = "";
+    uint8_t tamanho = configFile.read();
+
+    for (uint8_t i = 0; i < tamanho; i++)
+    {
+        if (configFile.available()) {
+            response += (char)configFile.read();
+        }
+    }
+
+    return response;
+}
 
 void carregarConfiguracao() {
     File configFile = SD.open("terrario.bin");
@@ -27,6 +42,9 @@ void carregarConfiguracao() {
     if (configFile.available() && configFile.size() >= 25) {
         configFile.read(config, 25);
     }
+
+    setarWifiSSID(obtemString(configFile));
+    setarWifiSenha(obtemString(configFile));
 
     configFile.close();
 }

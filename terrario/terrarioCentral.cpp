@@ -10,8 +10,6 @@
 #include "programacao.h"
 #include "terrarioCentral.h"
 
-byte config[25];
-
 /**
  * Valida se o status está valido
  */
@@ -36,11 +34,4 @@ void validarProgramacaoStatus(struct ts *dataHora, status *statusAtual, status *
         obterprogramacao(&programacao, programacaoId);
         atualizarStatus(statusAtual, programacao.validar(dataHora, tempoMinutos) * statusValidar);
     }
-}
-
-/**
- * Obtem a configuração atual do sistema
- */
-byte* obterConfiguracao() {
-    return config;
 }

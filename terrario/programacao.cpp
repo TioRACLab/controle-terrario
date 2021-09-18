@@ -6,7 +6,9 @@
 * TioRACLAb
 */
 
+#include "terrarioCentral.h"
 #include "programacao.h"
+#include "configuracao.h"
 #include <ds3231.h>
 
 
@@ -57,32 +59,12 @@ bool programacao::validar(struct ts *dataHora, bool tempoMinutos) {
  * Obtem a programação desejada
  */
 void obterprogramacao(struct programacao *programacao, uint8_t posicao) {
-    /*if (posicao == PROG_ILUMINACAO) {
-        programacao->tipo = 1;
-        programacao->valor1 = 9;
-        programacao->valor2 = 0;
-        programacao->valor3 = 17;
-        programacao->valor4 = 30;
-    }
-    else if (posicao == PROG_ESPECTRO) {
-        programacao->tipo = 1;
-        programacao->valor1 = 7;
-        programacao->valor2 = 0;
-        programacao->valor3 = 19;
-        programacao->valor4 = 0;
-    }
-    else if (posicao == PROG_CASCATA) {
-        programacao->tipo = 1;
-        programacao->valor1 = 10;
-        programacao->valor2 = 0;
-        programacao->valor3 = 22;
-        programacao->valor4 = 0;
-    }
-    else if (posicao == PROG_IRRIGACAO) {
-        programacao->tipo = 2;
-        programacao->valor1 = 3;
-        programacao->valor2 = 15;
-        programacao->valor3 = 00;
-        programacao->valor4 = 60;
-    }*/
+    byte* config = obterConfiguracao();
+    uint8_t pos = posicao * 5;
+
+    programacao->dias = config[pos++];
+    programacao->horaInicio = config[pos++];
+    programacao->minutoInicio = config[pos++];
+    programacao->horaFim = config[pos++];
+    programacao->minutoFim = config[pos++];
 }

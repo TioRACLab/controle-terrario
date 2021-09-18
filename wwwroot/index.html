@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Terrário</title>
+    <script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1>Terrário</h1>
+    <p><b>Status:</b> <span id="status"></span></p>
+</body>
+
+<script>
+
+$(document).ready(function() {
+    $.get("http://192.168.15.31/", function( data ) {
+        const obj = JSON.parse(data);
+        console.log(obj);
+        $("#status").text(obj.status);
+    });
+});
+
+</script>
+
+</html>

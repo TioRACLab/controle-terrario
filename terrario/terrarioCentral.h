@@ -20,6 +20,7 @@
 #define MD_HIDRAULICA
 #define MD_LUZ
 #define MD_PAINEL
+#define MD_WIFI
 
 
 
@@ -66,7 +67,3 @@ void atualizarStatus(status *statusAtual, status valor);
  */
 void validarProgramacaoStatus(struct ts *dataHora, status *statusAtual, status *statusManual, status statusValidar, uint8_t programacao, bool tempoMinutos);
 
-/**
- * Obtem a configuração atual do sistema
- */
-byte* obterConfiguracao();

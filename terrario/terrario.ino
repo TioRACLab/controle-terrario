@@ -9,6 +9,7 @@
 */
 
 #include <Wire.h>
+#include "configuracao.h"
 #include "terrarioCentral.h"
 #include "controleDataHora.h"
 #include "moduloLuz.h"
@@ -18,6 +19,7 @@
 #include "controleTrem.h"
 #include "atmosfera.h"
 #include "sd.h"
+#include "wifi.h"
 
 
 status statusManual = STS_DESLIGADO;
@@ -31,7 +33,6 @@ void setup() {
     initHidraulica();
     initAtmosfesra();    
     initTrem();
-    
 
     Serial.begin(9600);
     Serial.println("Sistema do terrario está iniciando");
@@ -47,6 +48,8 @@ void setup() {
     delay(3000); //Proteção de energia interrupta
 
     initSD();
+    initWifi();
+
     struct ts dataHora;
     obterDataHora(&dataHora);
     logar(&dataHora, STS_DESLIGADO, "Sistema Iniciado");
@@ -67,6 +70,7 @@ void loop() {
     loopTrem(&dataHora, &statusAtual, &statusManual);
     loopPainel(&dataHora, &statusAtual, &statusManual);
     loopSD(&dataHora, &statusAtual, &statusManual);
+    loopWifi(&dataHora, &statusAtual, &statusManual);
 
     //Serial.print("Status: ");
     //Serial.println(statusAtual);
